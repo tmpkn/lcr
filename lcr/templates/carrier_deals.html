@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block lcrContent %}
+
+<p class="stTit">Your Active Deals with {{ p.name }}</p>
+
+<p class="stText">Here you can find all active deals that you have registered in our system. To get additional information about a selected deal, click on "Details".</p>
+
+<p class="stText"><u>Deals with {{ user.lcrwebaccount.carrier.name }} as a buyer:</u></p>
+
+<table cellspacing="2" cellpadding="2" class="carTab">
+
+<tr>
+	<th>Deal ID:</th>
+	<th>Destination Name:</th>
+	<th>Buy Price:</th>
+	<th>Total Volume:</th>
+	<th>Set Up Date:</th>
+	<th>&nbsp;</th>
+</tr>
+
+{% for deal in deals_buyer %}
+
+<tr>
+	<td>{{ deal.id }}</td>
+	<td>{{ deal.destination }}</td>
+	<td>$ {{ deal.buy_price }} / min</td>
+	<td>{{ deal.total_minutes }}</td>
+	<td>{{ deal.dt_when|date:"Y-m-d H:i" }}</td>
+	<td><a href="/carrier/deal_details/{{ deal.id }}/">Details >></a></td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+<p class="stText"><u>Deals with {{ user.lcrwebaccount.carrier.name }} as a seller:</u></p>
+
+<table cellspacing="2" cellpadding="2" class="carTab">
+
+<tr>
+	<th>Deal ID:</th>
+	<th>Destination Name:</th>
+	<th>Sell Price:</th>
+	<th>Total Volume:</th>
+	<th>Set Up Date:</th>
+	<th>&nbsp;</th>
+</tr>
+
+{% for deal in deals_seller %}
+
+<tr>
+	<td>{{ deal.id }}</td>
+	<td>{{ deal.destination }}</td>
+	<td>$ {{ deal.buy_price }} / min</td>
+	<td>{{ deal.total_minutes|intcomma }}</td>
+	<td>{{ deal.dt_when|date:"Y-m-d H:i" }}</td>
+	<td><a href="/carrier/deal_details/{{ deal.id }}/">Details >></a></td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+
+{% endblock %}

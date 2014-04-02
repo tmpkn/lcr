@@ -1,0 +1,100 @@
+{% extends "base-register.html" %}
+
+{% load humanize %}
+
+{% block lcrContent %}
+
+<p class="stTit">Software License Agreement.</p>
+
+<p class="stText">Thank you for submitting the information. The form has been processed successfully, and all that's left is signing the License Agreement. Please read the agreement carefuly, and if you agree with all the terms and conditions expressed in it, fill in the form below to finish the registration process.</p>
+
+<form action="/sign/" method="POST">
+
+<input type="hidden" name="lrs_token" id="lrs_token" value="{{ reg.token }}" />
+
+<table class="lrT">
+
+	<tr>
+		<td class="lrL">License Agrement:</td>
+		<td class="lrF lrIV" colspan="2"><textarea id="lrs_agreement">TESSERAKT SOFTWARE APPLICANCE LICENSE AGREEMENT, TERMS & CONDITIONS
+		
+This agreement, dated today, by and between Tesserakt Tomasz Pawełek, registered VAT business (PL-945-203-47-17), hereinafter referred to as Tesserakt, and:
+
+Company: {{ reg.cust_name }}
+Address: {{ reg.cust_addr }}
+Country: {{ reg.cust_country }}
+E-mail: {{ reg.cust_email }}
+VAT Number: {{ reg.cust_vat }}
+Representative: {{ reg.cust_rep }}
+
+hereinafter referred to as Customer, both referred to as Parties.
+
+Operating accordingly to laws and regulations of European Union and Republic of Poland (including, but not limited to Telecommunications Law, Dz. U. Nr 171, poz. 1800), Parties agree as follows:
+
+1. PURPOSE
+1.1	The purpose of this Agreement is to define the terms under which Tesserakt will provide Customer with Software Appliance Service, defined as: a) setting up an installation of selected Software modules licensed by Tesserakt on Customer’s infrastructure, hereinafter referred to as Software, b) initial configuration of the Software, c) issuing a license key access, allowing Customer to use the Software for a defined period of time, hereinafter referred to as License.
+1.2	Additional services, such as monitoring, managing the VoIP endpoints, backing up Software data, customizing firewall configuration are not a part of this Agreement. If required by Customer, they could be arranged and provided by Tesserakt upon email notification.
+
+2. EFFECTIVENESS AND RENEWAL
+2.1	This Agreement becomes effective when signed electronically by the Customer using the registration form available at http://register.tesserakt.eu and approved by Tesserakt - Customer hereby confirms they have been informed, that Tesserakt will store the date, signature and IP address used for registration. Upon the registration, Tesserakt will conduct a due diligence on the customer which includes, but is not limited to, company registration number verification, VAT number verification (for companies inside EU VAT zone), financial records (Escrow platforms/banking records) and fraud databases. Tesserakt might request additional documentation, including the individual identity confirmation (passport, national card, drivers license) prior to approving the Agreement.
+2.2	Tesserakt might request a deposit (escrow platform / bank / CC charge / paypal) prior to approving the Agreement.
+2.3	Upon approval of the Agreement, the Customer is assigned an individual username and password (hereinafter referred to as Credentials), which allow him to log in to the software web-interface and control the selected and activated modules.
+
+3. CUSTOMER'S RESPONSIBILITIES FOR THE SOFTWARE AND DATA
+3.1	The Software is licensed by Tesserakt for the exclusive use of the Customer.
+3.2	Customer cannot resell / rent or share access to the Software with the third parties.
+3.3	Customer cannot share Credentials with the third parties.
+3.4	Customer shall abide by all of the rules, regulations and policies of Tesserakt and other networks and computer/ip systems accessed by the Software, including - but not limited to - the VoIP peers in the public Internet. If the Customer and/or its customers are unsure of those policies, it is their sole responsibility to ascertain said policies. Customer agrees to hold Tesserakt harmless from any claims resulting from the Customer's use of the Software that: a) damages either the Customer or another party, b) processes content (including voice communication) that damages the Customer or another party, c) processes content (including voice communication) that violates any international or local law or regulation, d) is a result of misuse of the tools provided within the Software.
+
+4. PAYMENTS AND CHARGES
+4.1	Customer is responsible for any and all fixed and accumulative charges for their account which result from the Software usage.
+4.2	The Software license - and therefore the Software access - is granted for the limited amount of time, which constitutes a Payment Period. The length of a Payment Period might be different per different modules of the Software that are being used by the Customer.
+4.3	Tesserakt is responsible for issuing a payment invoice, which will be available for the Customer in the Payments module of the Software. The invoice will not be due in a time shorter than 24 hours from the moment it’s available for the Customer.
+4.4	Tesserakt keeps the right to immediately suspend or terminate the Software access by not extending its license upon an overdue invoice. 
+
+5. LIMITATION OF LIABILITY
+5.1	Tesserakt performs no control whatsoever over the data processed by the Software. Tesserakt makes no warranties of any kind, whether expressed or implied, for the services it provides. Tesserakt disclaims any warranty of merchantability or fitness for a particular purpose. Tesserakt will not be responsible for any damage you suffer. This includes the loss of data resulting from delays, non-deliveries, miss-deliveries, or service interruptions caused by its own negligence, omission or your errors or omissions. Use of any information obtained via Tesserakt's Software is at your own risk. Tesserakt specifically denies any responsibility for the accuracy or quality of information obtained through the Software.
+5.2	Tesserakt's liability hereunder for any losses or damages suffered by Customer or its customers with respect to the Software, whether direct or indirect, from any cause whatsoever, shall be limited to 25% of the amount paid by Customer to Tesserakt during a single Payment Period only. Tesserakt shall not be liable for any lost profits or for any claim or demand against the Customer by any other party based on any expressed, implied or claimed warranties by Tesserakt not specifically set forth in this Agreement.
+5.3	In no event will Tesserakt be liable for consequential damages even if Tesserakt has been adviced of the possibility of such damages.
+5.4	No action, regardless of form, rising out of this Agreement and agreements mentioned in point 1.2 may be brought by Customer more than one (1) month after the cause of action has occured.
+5.5	Customer will defend and hold harmless Tesserakt, its director, employees and contractors from any action brought against them by any third-party in connection with this Agreement or agreements mentioned in point 1.2 or any other agreement between Customer and a third-party, from any claims resulting from the use of the Software by Customer, its customers and third-parties, end users and unauthorized users. Customer shall pay all damages and attorney fees arising as a result of Customer's use or misuse of any rights granted herein.
+
+6. COMPLIANCE WITH LAWS
+6.1	Customer shall at all times comply with the applicable laws and regulations of the European Union and Republic of Poland and all other governmental entities governing, restricting or otherwise pertaining to the use, distribution, export or import of data, products, services and/or technical data related to any services mentioned in this Agreement.
+6.2	Tesserakt's Software may only be used for lawful purposes. 
+6.3	Customer hereby allows Tesserakt to issue invoices using the details provided in this agreement. Customer will receive automatically issued PDF invoices from Tesserakt and will handle services import duties according to local and international laws.
+6.4	Customer hereby confirms that for every paid invoice issued by Tesserakt there has been a service import to their country and tax zone of residence.
+
+7. TERMINATION
+7.1	Tesserakt has the right to immediately suspend or terminate this Agreement for any reason.
+7.2	Customer must cancel using the Account module of the Software.
+7.3	Upon terminating of this agreement all data stored in Tesserakt database and related to this instance of the Software usage will be deleted by Tesserakt and the IP address given to the Customer (in case of dedicated access) will no longer be associated to Customer's services.
+
+8. MODIFICATION
+8.1	This Agreement shall constitute the entire agreement between Customer and Tesserakt in relation to Tesserakt Software Appliance Service. This Agreement shall not be modified or altered except by a written instrument duly executed by Customer and by authorized representative of Tesserakt.
+</textarea></td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">Do you agree?</td>
+		<td class="lrF lrIW"><select id="lrs_yn" name="lrs_yn"><option value="0">NO</option><option value="1">YES</option></select></td>
+		<td class="lrH">Please specify, whether you agree with all the terms and conditions expressed in the License Agreement presented to you on this page.</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">Signature:</td>
+		<td class="lrF lrIW"><input type="text" id="lrs_sign" name="lrs_sign" /></td>
+		<td class="lrH">If you agree with all the terms and conditions expressed in the License Agreement, please put your name in this field. Please make sure this form is being signed by the Representative mentioned in the Agreement. Otherwise, the application will be rejected.</td>
+	</tr>
+	
+</table>
+
+<p class="stTit">Signing the Document</p>
+
+<p class="stText">By clicking the submit button ("Submit Signature") you confirm that you read (by scrolling the License Agreement window to the very bottom), understood and agree with all the points in the License Agreement displayed on this page. Tesserakt will store your IP Address and the date of your application.</p>
+
+<input class="lrS" type="Submit" value="Submit Signature" />
+
+</form>
+
+{% endblock %}

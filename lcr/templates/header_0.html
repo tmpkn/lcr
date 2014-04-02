@@ -1,0 +1,98 @@
+<p class="lcrH">Welcome to TG-LCR Web Portal. You're logged in as <b>{{ user.first_name }} {{ user.last_name }}</b> ({{ user.get_profile.get_partner.partner }}) | <a href="#">Logout</a> | Last update session completed @ <span>{{ ss.dt_when }}</span> (<a href="http://www.timeanddate.com/worldclock/city.html?n=535" target="lcrTZ">PL/KR</a>) - <span>{{ ss_delta }} seconds</span> ago.</p>
+<hr />
+<table class="lcrHM">
+
+{% if user.get_profile.ma_management %}
+<tr>
+	<th>MANAGEMENT:</th>
+	<td><a href="/">Home</a></td>
+	<td><a href="#">Manage Escalations</a></td>
+	<td><a href="/az/">LCR Matrix</a></td>
+	<td><a href="/upload/">Upload an A-Z xls</a></td>
+	<td><a href="/email/index/">Email DB</a></td>
+	<td rowspan="6" style="border: 0px none;"></td>
+</tr>
+{% endif %}
+{% if user.get_profile.ma_test %}
+<tr>
+	<th>TEST TRAFFIC:</th>
+	<td><a href="/test_routes/">View Prefixes</a></td>
+	<td><a href="/add_route/">New Prefix</a></td>
+	<td><a href="/view_test/0/">View Tests</a></td>
+	<td><a href="/add_test/">New Test</a></td>
+	<td>&nbsp;</td>
+</tr>
+{% endif %}
+{% if user.get_profile.ma_deals %}
+<tr>
+	<th>WHOLESALE:</th>
+	<td><a href="/dax/">The Dashboard</a></td>
+	<td><a href="/live_calls/">Live Calls</a></td>
+	<td><a href="/list_carriers/">Carriers</a></td>
+	<td><a href="/dest_list/">Destinations</a></td>
+	<td><a href="/add_deal/">New Deal</a></td>
+
+</tr>
+{% endif %}
+{% if user.get_profile.ma_financial %}
+<tr>
+	<th>FINANCIAL:</th>
+	<td><a href="/bill/month/">Billing</a></td>
+	<td><a href="/add_point/">Funds</a></td>
+	<td></td>
+	<td><a href="/ems_index/">EMS</a></td>
+	<td>&nbsp;</td>
+</tr>
+{% endif %}
+{% if user.get_profile.ma_technical %}
+<tr>
+	<th>TECHNICAL:</th>
+	<td><a href="/switch_stats/">VS Raw Stats</a></td>
+	<td><a href="/list_monitors/">QoS</a></td>
+	<td><a href="/server_monitor/">Watchdog</a></td>
+	<td><a href="/ver_stats/">Stats Verification</a></td>
+	<td><a href="/add_recon/">CDR Reconciliations</a></td>
+</tr>
+{% endif %}
+{% if user.get_profile.ma_retail %}
+<tr>
+	<th>RETAIL:</th>
+	<td><a href="/retail/services/">Services</a></td>
+	<td><a href="/retail/customers/">Customers</a></td>
+	<td><a href="/retail/tariffs/">Tariffs & Rates</a></td>
+	<td><a href="/retail/destinations/">Destinations</a></td>
+	<td>&nbsp;</td>
+</tr>
+{% endif %}
+{% if user.get_profile.ma_mvts %}
+<tr>
+	<th>MVTS:</th>
+	<td><a href="/mvts/calls/">Live Calls</a></td>
+	<td><a href="/mvts/report/">Traffic Report</a></td>
+	<td><a href="/mvts/alert/">Traffic Alerts</a></td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+{% endif %}
+{% if user.get_profile.ma_agents %}
+<tr>
+	<th>AGENTS:</th>
+	<td><a href="/ragents/emails/">Mailing Lists</a></td>
+	<td><a href="/ragents/queue/">Queue Status</a></td>
+	<td><a href="/ragents/candidate/0/">Candidates Index</a></a></td>
+	<td><a href="/ragents/list/">Agents List</a></td>
+	<td>&nbsp;</td>
+</tr>
+{% endif %}
+
+<tr>
+	<th>FREE TOLS:</th>
+	<td><a href="/register/">LCR Registration</a></td>
+	<td><a href="/free/cdrgen/">CDRTool</a></td>
+	<td>&nbsp;</td>
+</tr>
+
+</table>
+
+<hr />
+

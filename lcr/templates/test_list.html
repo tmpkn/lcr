@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<table>
+	<tr>
+		<th>ID:</th>
+		<th>Destination:</th>
+		<th>Supplier:</th>
+		<th>Added:</th>
+		<th>Status:</th>
+	</tr>
+{% for test in tests %}
+	<tr>
+		<td>{{ test.id }}</td>
+		<td><a href="/view_test/{{ test.id }}/">{{ test.destination }}</a></td>
+		<td>{{ test.supplier }}</td>
+		<td>{{ test.dt_when|date:"Y-m-d H:i" }}</td>
+		<td>{{ test.get_status_display }}</td>
+	</tr>
+{% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Manage Customer: {{ customer }}</p>
+
+<p class="stText"><a href="/edit_carrier/{{ customer.carrier.id }}/">Back to Carrier: {{ customer.carrier }}</a></p>
+
+<table>
+	<tr>
+		<th>Switch Login:</th>
+		<td>{{ customer.s_name }}</td>
+	</tr>
+	<tr>	
+		<th>Switch:</th>
+		<td>{{ customer.switch }}</td>
+	</tr>
+	<tr>
+		<th>Tech Prefix:</th>
+		<td>{{ customer.tech_prefix }}</td>
+	</tr>
+</table>
+
+<!--<p class="stTit">VoipSwitch DialPlan:</p>
+
+<p class="stText">In order to delete all DP entries related to a selected customer (for example, when rerouting traffic or shutting down deals), please use the option below. <b><u>WARNING!</u></b> This option is instant! All the traffic for this customer will be STOPPED until synchronized again by the LCR system (~3 minutes). This function applies to Voip Switch only.</p>
+
+<p class="stText"><a href="/purge_customer/{{ customer.id }}/">Purge Customer's DP Entries from the Master Switch</a></p>-->
+
+<p class="stTit">Add an IP Address:</p>
+
+<form action="/add_customer_ip/{{ customer.id }}/" method="POST">
+<table>
+	{{ ipform.as_table }}
+</table>
+<input type="submit" value="ADD IP" />
+</form>
+
+<p class="stTit">Active IP Addresses:</p>
+
+<table>
+{% for ip in customer.get_ips %}
+	<tr>
+		<td>{{ ip.ip_addr }}</td>
+		<td><a href="/del_customer_ip/{{ ip.id }}/">[X]</a></td>
+	</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

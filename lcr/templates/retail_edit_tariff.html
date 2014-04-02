@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Edit Tariff: {{ tariff }}</p>
+
+<p class="stText">Use the following table to make changes to your existing Tariff. Changes saved here are processed immediately by the system.</p>
+
+<table class="lcrED">
+<form action="/retail/edit_tariff/{{ tariff.id }}/" method="POST">	
+{{ tform.as_table }}
+<tr>
+	<td colspan="2"><input type="submit" value="Save Changes" /></td>
+</tr>
+</form>
+</table>
+
+<p class="stTit">Manage Tariff Rates:</p>
+
+<p class="stText">Use the following table to manage your Tariff's Rates. To add a new Rate, use the form on the bottom of the page.</p>
+
+<form action="/retail/add_rate/{{ tariff.id }}/" method="POST">
+
+<table class="lcrECR lcrRAR">
+	<tr>
+		<th>&nbsp;</th>
+		<th>Destination:</th>
+		<th>&nbsp;</th>
+		<th>ToD:</th>
+		<th>Prefix:</th>
+		<th>Rate #1:</th>
+		<th>Billing #1:</th>
+		<th>Ticks #1:</th>
+		<th>Rate #2:</th>
+		<th>Billing #2:</th>
+	</tr>
+	{% for rate in rates %}
+	<tr>
+		<td colspan="3">{{ rate.name }} <a href="/retail/del_rate/{{ rate.id }}/">[X]</a></td>
+		<td>{{ rate.tod }}</td>
+		<td>{{ rate.prefix }}</td>
+		<td>EUR {{ rate.rate_1 }} / min</td>
+		<td>{{ rate.billing_1 }} s</td>
+		<td>{{ rate.ticks_1 }}</td>
+		<td>EUR {{ rate.rate_2 }} / min</td>
+		<td>{{ rate.billing_2 }} s</td>
+	</tr>
+	{% endfor %}
+	<tr class="lcrRARR">
+		<td colspan="3" class="lcrRARRn">{{ rform.name }}</td>
+		<td>{{ rform.tod }}</td>
+		<td>{{ rform.prefix }}</td>
+		<td>{{ rform.rate_1 }}</td>
+		<td>{{ rform.billing_1 }}</td>
+		<td>{{ rform.ticks_1 }}</td>
+		<td>{{ rform.rate_2 }}</td>
+		<td>{{ rform.billing_2 }}</td>
+	</tr>
+	<tr>
+		<td colspan="10"><input type="submit" value="Add New Rate" /></td>
+	</tr>
+</table>
+
+</form>
+
+
+{% endblock %}

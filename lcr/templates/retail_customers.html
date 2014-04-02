@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+	
+<script type="text/javascript">
+	
+	arr_CS = {}
+	
+	$(function() {
+		$('#r_go').live('click', rsc_go);
+		$('#dialog-wait').dialog({
+			modal: true,
+			autoOpen: false,
+			closeOnEscape: false,
+		});
+	});
+	
+	function rsc_go() {
+		term = $('#search_box').val();
+		$('#r_res').empty();
+		$('#dialog-wait').dialog('open');
+		$.getJSON('/ajx_rc_term?term=' + term, rsc_cpu);
+	}
+	
+	function rsc_cpu(data) {
+		$('<tr></tr>').attr('id', 'htr').appendTo('#r_res');
+		$('<th></th>').text('User ID').appendTo('#htr');
+		$('<th></th>').text('Full Name').appendTo('#htr');
+		$('<th></th>').text('VAT ID').appendTo('#htr');
+		$.each(data, function(index, value) {
+			trid = 'ctr_' + value['id'];
+			$('<tr></tr>').attr('id', trid).appendTo('#r_res');
+			$('<a></a>').attr('href', '/retail/edit_customer/' + value['id'] + '/').text('SPARC#' + value['id']).appendTo(
+				$('<th></th>').appendTo('#' + trid)
+			);
+			$('<td></td>').text(value['name']).appendTo('#' + trid);
+			$('<td></td>').text(value['vat_id']).appendTo('#' + trid);
+		});
+		$('#dialog-wait').dialog('close');
+	}
+	
+</script>
+
+<p class="stTit">Retail Customers</p>
+
+<p class="stText"><a href="/retail/add_customer/">Add New Retail Customer</a></p>
+
+<p class="stText">Use the following search box to locate the Retail Customers, which you want to edit. You can use any combination of their name, business name or phone number associated with their service:</p>
+
+<input type="text" name="search_box" id="search_box" /><a href="#" id="r_go">SEARCH</a>
+
+<table class="lcrED" id="r_res">
+</table>
+
+
+<div id="dialog-wait" title="LCR Matrix - Retrieving Data">
+<p>Your request is being processed, please hold your breath.</p>
+</div>
+
+{% endblock %}

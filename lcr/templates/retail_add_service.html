@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<form action="/retail/add_service/{{ tid }}/" method="POST">
+
+<p class="stTit">Add New Service</p>
+
+<p class="stText">Please fill in the following form to define a new service. After the service is saved in the system, you will be able to perform additional actions, like defining attached destinations.</p>
+
+<table class="lcrED">
+{{ sform.as_table }}
+</table>
+
+<p class="stText"><u>Service Profile:</u></p>
+
+<table class="lcrED">
+{{ spform.as_table }}
+<tr>
+	<td colspan="2"><input type="submit" value="Save Changes" /></td>
+</tr>
+</table>
+
+</form>
+
+
+{% endblock %}

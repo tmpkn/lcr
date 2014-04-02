@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Potential Customers (Candidates) Index</p>
+
+<table>
+	<tr>
+		<th>ID:</th>
+		<th>Date Added:</th>
+		<th>Full Name:</th>
+		<th>Phone Number:</th>
+		<th>Agent:</th>
+		<th>&nbsp;</th>
+	</tr>
+
+{% for c in candidates %}
+<tr>
+	<td>{{ c.id }}</td>
+	<td>{{ c.dt_input }}</td>
+	<td>{{ c.first_name }} {{ c.last_name }}</td>
+	<td>{{ c.phone }}</td>
+	<td>{{ c.operator.first_name }} {{ c.operator.last_name }}</td>
+	<td><a href="/ragents/candidate/{{ c.id }}/">Details</a></td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

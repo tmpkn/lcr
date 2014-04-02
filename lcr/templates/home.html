@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<script type="text/javascript">
+
+function print_r(theObj){
+  if(theObj.constructor == Array ||
+     theObj.constructor == Object){
+    document.write("<ul>")
+    for(var p in theObj){
+      if(theObj[p].constructor == Array||
+         theObj[p].constructor == Object){
+document.write("<li>["+p+"] => "+typeof(theObj)+"</li>");
+        document.write("<ul>")
+        print_r(theObj[p]);
+        document.write("</ul>")
+      } else {
+document.write("<li>["+p+"] => "+theObj[p]+"</li>");
+      }
+    }
+    document.write("</ul>")
+  }
+}
+
+arrAZ = {}
+
+	$.ajaxSetup({
+		timeout: 10000
+	});
+
+	$(function() {
+		$('#search_code').autocomplete({
+			source:	'/ajx_ac_code',
+			minLength: 2
+		});
+		$('#r_go').live('click', sc_go);
+		$('.ctx_mtr').live('click', function() {
+			bc = $(this).attr('x_code');
+			$('.ctx_' + bc).toggle();
+		});
+		$('.ior').live('click', ior_go);
+		$('#dialog-wait').dialog({
+			modal: true,
+			autoOpen: false,
+			closeOnEscape: false,
+		});
+	});
+
+	function ior_go() {
+		$('.ctc').addClass('ctc_hide');
+		$('.ior:checked').each(function() {	
+			cc = $(this).attr('ctcv');
+			$('.ctc_' + cc).removeClass('ctc_hide');
+		});
+	}
+
+	function sc_go() {
+		term = $('#search_code').val();
+		$('#r_res').empty();
+		$('#dialog-wait').dialog('open');
+		$.getJSON('/ajx_sc_code?term=' + term, sc_go_cpu);
+	}
+
+	function sc_go_cpu(data) {
+		arrAZ = data;
+		azs = {}
+		$.each(data['azs'], function(index, value) {
+			azs[index] = {'id': index, 'supplier': value}
+		});
+		$('<tr></tr>').attr('id', 'htr').appendTo('#r_res');
+		$('<th></th>').text('CODE').appendTo('#htr');
+		$('<th></th>').text('NAME').appendTo('#htr');
+		$('<th></th>').text('OFFER').appendTo('#htr');
+		$('<th></th>').text('SUPPLIER').appendTo('#htr');
+		
+		$.each(azs, function(index, value) {
+			$('<th></th>').attr('class', 'ctc ctc_hide ctc_' + value['id']).text(value['supplier'] + ' (' + index + ')').appendTo('#htr');
+		});
+		
+		$.each(data['arr'], function(index, value) {
+			$('<tr></tr>').attr('id', 'ctr_' + value['code']).attr('class', 'ctx_mtr').attr('x_code', value['code']).appendTo('#r_res');
+			$('<td></td>').text(value['code']).appendTo('#ctr_' + value['code']);
+			$('<td></td>').text(value['dname']).appendTo('#ctr_' + value['code']);
+			offer = 0;
+			supp_id = 0;
+			for (x in azs) {
+				price = value['offers'][azs[x]['id']];
+				if (price != 0) {
+					if ((offer == 0) || (price < offer)) {
+						offer = price;
+						supp_id = x;
+					}
+				}
+			}
+			if (offer  == 0) {
+				$('<td></td>').attr('colspan', '2').text('--').appendTo('#ctr_' + value['code']);
+			} else {
+				$('<td></td>').text('$' + offer).appendTo('#ctr_' + value['code']);
+				$('<td></td>').text(azs[supp_id]['supplier']).appendTo('#ctr_' + value['code']);
+			}
+			for (x in azs) {
+				price = value['offers'][azs[x]['id']];
+				if (price == 0) {
+					vprice = 0;
+					price = '--';
+				} else {
+					vprice = price;
+					price = '$' + price;
+				}
+				$('<td></td>').attr('class', 'ctc ctc_hide ctc_' + azs[x]['id']).text(price).appendTo('#ctr_' + value['code']);
+				ctx = 'ctx_' + value['code'] + '_' + azs[x]['id'];
+				$('<tr></tr>').attr('id', ctx).attr('class', 'ctx_hide ctx_' + value['code']).appendTo('#r_res');
+				$('<td></td>').text(value['code']).appendTo('#' + ctx);
+				$('<td></td>').text(value['dname']).appendTo('#' + ctx);
+				$('<td></td>').text(price).appendTo('#' + ctx);
+				$('<td></td>').text(azs[x]['supplier']).appendTo('#' + ctx);
+				for (y in azs) {
+					nprice = value['offers'][azs[y]['id']];
+					if ((nprice == 0) || (vprice == 0)) {
+						pprice = '--';
+					} else {
+						pprice = '' + Math.round(nprice * 100 / vprice) + ' %';
+					}
+					$('<td></td>').attr('class', 'ctc ctc_hide ctc_' + azs[y]['id']).text(pprice).appendTo('#' + ctx);
+				}
+			}
+		});
+		ior_go();
+		$('#dialog-wait').dialog('close');
+	}
+
+</script>
+
+<form action="/" method="POST">
+<input type="text" name="search_code" id="search_code" />
+<a href="#" id="r_go">GO</a>
+</form>
+<table id="r_res">
+</table>
+<hr />
+Your A-Zs:
+<ul>
+{% for az in azs %}
+<li><a href="/az/delete/{{ az.id }}/">[X]</a> <a href="/az/download/{{ az.id }}/">[V]</a> <input type="checkbox" class="ior" ctcv="{{ az.id }}" /> - {{ az.dt_when|date:"Y-m-d, H:i" }} - [ ID: {{ az.id }} ][ R: {{ az.rcount }} ] <a href="/edit_carrier/{{ az.supplier.id }}/">{{ az.supplier }}</a></li>
+{% endfor %}
+</ul>
+
+<div id="dialog-wait" title="LCR Matrix - Retrieving Data">
+<p>Your request is being processed, please hold your breath.</p>
+</div>
+
+{% endblock %}

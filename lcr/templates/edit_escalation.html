@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Manage Escalation #{{ e.id }}:</p>
+
+<table class="lcrMEB">
+	<tr>
+		<th>Date Submitted:</th>
+		<td>{{ e.info_dt }}</td>	
+	</tr>
+	<tr>
+		<th>IP Address:</th>
+		<td>{{ e.info_ip }}</td>
+	</tr>
+	<tr>
+		<th>Status:</th>
+		<td>{{ e.get_status_display }}</td>	
+	</tr>
+	<tr>
+		<th>Author:</th>
+		<td>{{ e.author_name }}</td>	
+	</tr>
+	<tr>
+		<th>Carrier:</th>
+		<td><a href="/edit_carrier/{{ e.carrier.id }}/">{{ e.carrier.name }}</a></td>
+	</tr>
+	<tr>
+		<th>Subject:</th>
+		<td>{{ e.get_request_type_display }}</td>
+	</tr>
+	<tr>
+		<th>Message:</th>
+		<td>{{ e.request_details }}</td>
+	</tr>
+	<tr>
+		<th>Attachement:</th>
+		<td>
+			{% if e.file %}
+				<a href="/file_escalation/{{ e.id }}/">[ DOWNLOAD ]</a>
+			{% else %}
+				- None -
+			{% endif %}
+		</td>
+	</tr>
+</table>
+
+{% for r in rs %}
+<p class="stTit">Escalation Response #{{ r.id }}:</p>
+<table class="lcrMEB">
+	<tr>
+		<th>Date Submitted:</th>
+		<td>{{ r.info_dt }}</td>
+	</tr>
+	<tr>
+		<th>Author:</th>
+		<td>{{ r.author.first_name }} {{ r.author.last_name }}</td>
+	</tr>
+	<tr>
+		<th>Status:</th>
+		<td>{{ r.get_status_display }}</td>
+	</tr>
+	<tr>
+		<th>Message:</th>
+		<td>{{ r.response_details }}</td>
+	</tr>
+	<tr>
+		<th>Attachement:</th>
+		<td>
+			{% if r.file %}
+                                <a href="/file_escalation_response/{{ r.id }}/">[ DOWNLOAD ]</a>
+                        {% else %}
+                                - None -
+                        {% endif %}
+		</td>
+	</tr>
+</table>
+{% endfor %}
+
+<p class="stTit">Update Escalation:</p>
+
+<form action="/edit_escalation/{{ e.id }}/" method="POST" enctype="multipart/form-data">
+
+<table class="lcrMEB">
+	<tr>
+		<th>Author:</th>
+		<td>{{ user.first_name }} {{ user.last_name }}</td>
+	</tr>
+	<tr>
+		<th>New Status:</th>
+		<td>{{ f.status }}</td>
+	</tr>
+	<tr>
+		<th>Message:</th>
+		<td>{{ f.response_details }}</td>
+	</tr>
+	<tr>
+		<th>File (optional):</th>
+		<td>{{ f.file }}</td>
+	</tr>
+</table>
+
+<input type="submit" value="Submit" />
+
+</form>
+
+{% endblock %}

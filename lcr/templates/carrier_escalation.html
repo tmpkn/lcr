@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<p class="stTit">NOC Escalation Form</p>
+<p class="stText">Please fill in the following form, describing the issue you're having in as many details as possible. If this is a follow up to a previous enquiry, please include the <b>Escalation ID</b>, otherwise leave the field blank.</p>
+<p class="stText">You can also attach a file to your request. Please use this field to share your SIP Traces / billing reports / invoices or any other type of media with us. Maximum file size is 2 Megabytes, and all formats are acceptable. For SIP tracing, our preferred format is Wireshark trace.</p>
+<div class="cForm bForm">
+<form action="/carrier/escalation/" method="post" enctype="multipart/form-data">
+
+	<fieldset>
+		<legend>VoIP Escalation Form</legend>
+		<table>
+                {{ form.as_table }}
+		</table>
+	</fieldset>
+        <input class="cfSubmit" type="submit" value="Submit Form" />
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{
+"deals": [
+{% for deal in deals %}
+	{
+		"id":		{{ deal.id }},
+		"network":	"{{ deal.destination.name }}",
+		"full_name":"{{ deal }}"
+	}
+	{% if not forloop.last %},{% endif %}
+{% endfor %}
+],
+
+"invoices": [
+{% for inv in invoices %}
+	{
+		"id":		{{ inv.id }},
+		"carrier":	"{{ inv.carrier.name }}",
+		"dt_when":	"{{ inv.dt_when }}",
+		"total":	"{{ inv.total|floatformat:2 }}",
+		"status":	"{{ inv.get_status_display }}"
+	}
+	{% if not forloop.last %},{% endif %}
+{% endfor %}
+],
+
+"positions": [
+{% for pos in positions %}
+	{
+		"id":			{{ pos.id }},
+		"deal_id":		{{ pos.deal.id }},
+		"dt_from":		"{{ pos.invoice.dt_from|date:"Y-m-d" }}",
+		"dt_to":		"{{ pos.invoice.dt_to|date:"Y-m-d" }}",
+		"invoice_id":	{{ pos.invoice.id }}
+	}
+	{% if not forloop.last %},{% endif %}
+{% endfor %}
+]}

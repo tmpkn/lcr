@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block lcrContent %}
+
+<script type="text/javascript">
+	$(function () {
+		$('.mrM').live('click', function() {
+			var subs = $(this).attr('subs');
+			$('.mrS' + subs).toggle();
+		});
+	});	
+</script>
+
+<p class="stTit">MVTS-Pro1 Customer Traffic Report</p>
+
+{% for customer, customer_list in res %}
+
+<p class="stTit"><u>{{ customer }}</u></p>
+
+<table class="mvtsMR" cellspacing="0" cellpadding="0">
+
+<tr>
+	<th class="mrDest" rowspan="2">Destination:</th>
+	{% for day in days %}
+	<th colspan="4">{{ day }}</th>	
+	{% endfor %}
+</tr>
+
+<tr>
+	{% for day in days %}
+	<th class="mrTHM">ASR</th>
+	<th class="mrTHM">ACD</th>
+	<th class="mrTHM">mins</th>
+	<th class="mrTHM">%</th>
+	{% endfor %}
+</tr>
+
+{% for abbrev, abbrev_list in customer_list %}
+
+<tr>
+	<th class="mrDest mrM" subs="C{{ customer }}A{{ abbrev }}">{{ abbrev }}</th>
+	{% for dt_day, result in abbrev_list.total %}
+	<td class="c{{ result.css }} mrMin mrTT" ttFailed="{{ result.failed|intcomma }}">{{ result.asr|floatformat }} %</td>
+	<td class="c{{ result.css }} mrMin">{{ result.acd }} s</td>
+	<td class="c{{ result.css }} mrMin">{{ result.minutes|intcomma }}</td>
+	<td class="c{{ result.css }} mrPrc">{{ result.change }} %</td>
+	{% endfor %}
+</tr>
+
+{% for destination, destination_list in abbrev_list.subs %}
+<tr class="mrS mrSC{{ customer }}A{{ abbrev }}">
+	<th class="mrDest mrTHM">{{ destination }}</th>
+	{% for dt_day, result in destination_list %}
+	<td class="c{{ result.css }} mrMin mrTT" ttFailed="{{ result.failed|intcomma }}">{{ result.asr|floatformat }} %</td>
+	<td class="c{{ result.css }} mrMin">{{ result.acd }} s</td>
+	<td class="c{{ result.css }} mrMin">{{ result.minutes|intcomma }}</td>
+	<td class="c{{ result.css }} mrPrc">{{ result.change }} %</td>
+	{% endfor %}
+</tr>
+{% endfor %}
+
+{% endfor %}
+
+</table>
+
+<script type="text/javascript">
+	$(function() {
+		$(".mrTT").each(function(index) {
+			$(this).simpletip({
+				content: 'Failed: ' + $(this).attr('ttFailed'),
+				fixed: false
+			});
+		});
+	});
+</script>
+
+{% endfor %}
+
+{% endblock %}

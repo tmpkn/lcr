@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Robo Caller Agent PBX Queue</p>
+
+<table>
+	<tr>
+		<th>RING:</th>
+		<td>{{ stats.counts.call }}</td>
+	</tr>
+	<tr>
+		<th>ACTIVE:</th>
+		<td>{{ stats.counts.active }}</td>
+	</tr>
+	<tr>
+		<th>PAUSED:</th>
+		<td>{{ stats.counts.paused }}</td>
+	</tr>
+</table>
+
+<table>
+	<tr>
+		<th>Agent Name</th>
+		<th>Agent Extension</th>
+		<th>Agent Email</th>
+		<th>Last Call</th>
+		<th>PBX Status</th>
+		<th>WEB Status</th>
+	</tr>
+{% for q in stats.queue %}
+	<tr>
+		<td>{{ q.agent.user.first_name }} {{ q.agent.user.last_name }}</td>
+		<td>{{ q.agent.user.get_profile.get_agent_ara.name }}</td>
+		<td>{{ q.agent.user.email }}</td>
+		<td>{{ q.last_call }}</td>
+		<td>{{ q.status }}</td>
+		<td>{{ q.agent.get_status_display }}</td>
+	</tr>
+{% endfor %}
+</table>
+
+<p class="stTit">Incoming Calls</p>
+
+<table>
+	<tr>
+		<th>Phone Number</th>
+		<th>Wait Time</th>
+	</tr>
+{% for c in stats.calls %}
+	<tr>
+		<td>+{{ c.number }}</td>
+		<td>{{ c.wait }} s</td>
+	</tr>
+{% endfor %}
+</table>
+
+<p class="stTit">Ongoing Conferences</p>
+
+<table>
+	<tr>
+		<th>Conf. Code</th>
+		<th>Parties</th>
+		<th>Duration</th>
+	</tr>
+{% for m in stats.meetmes %}
+	<tr>
+		<td>{{ m.exten }}</td>
+		<td>{{ m.parties }}</td>
+		<td>{{ m.d_h }}:{{ m.d_m }}:{{ m.d_s }}</td>
+	</tr>
+{% endfor %}
+</table>
+
+<p class="stTit">Last Call Requests [:100]</p>
+
+<table>
+	<tr>
+		<th>Date/Time</th>
+		<th>Extension</th>
+		<th>Agent</th>
+	</tr>
+{% for r in reqs %}
+	<tr class="raR{{ r.int_answered }}">
+		<td>{{ r.dt_when }}</td>
+		<td>{{ r.exten }}</td>
+		<td>{{ r.str_agent }}</td>
+	</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

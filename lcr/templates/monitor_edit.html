@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Modify QM: {{ monitor.deal }}:</p>
+<form action="/monitor_edit/{{ monitor.id }}/" method="POST">
+<table>
+	{{ form }}
+</table>
+<input type="submit" value="EDIT MONITOR" />
+</form>
+
+{% endblock %}

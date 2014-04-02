@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block lcrContent %}
+
+<script type="text/javascript">
+$(function() {
+	$('#lcrMCHA').live('click', function() {
+		$('.lcrMCH').toggle();
+	}); 
+});
+</script>
+
+<p class="stTit">View Reconciliation Results</p>
+
+<p class="stText">Here you can view your Reconciliation process results. The
+following expressions are used through the document: <b>LCR</b> - marks a
+value related to data stored in LCR database, usually pulled directly from
+appropriate switch during the reconciliation process, <b>EXT</b> - marks a
+value from external CDRs provided by a carrier.</p>
+
+<table class="lcrED lcrRESRECON">
+	<tr>
+		<th>&nbsp;</th>
+		<th colspan="2" class="lcrHC">LCR</th>
+		<th colspan="2" class="lcrHC">EXT</th>
+	</tr>
+	<tr>
+		<th>Reconciliation:</th>
+		<td colspan="4">#{{ r.id }} - {{ r.str_party }}</td>
+	</tr>
+	<tr>
+		<th>Submitted:</th>
+		<td colspan="4">{{ r.dt_when }} by <b>{{ r.author }}</b></td>
+	</tr>
+	<tr>
+		<th>Time Interval:</th>
+		<td colspan="4">T/LCR = T/EXT + {{ r.lcrreconresultsglobal.interval|intcomma }} seconds</td>
+	</tr>
+	<tr>
+		<th>Time Period:</th>
+		<td colspan="2">{{ dt_lcr_begin }} - {{ dt_lcr_end }}</td>
+		<td colspan="2">{{ dt_ext_begin }} - {{ dt_ext_end }}</td>
+	</tr>
+	<tr>
+		<th>Calls:</th>
+		<td class="lcrRRI">{{ r.lcrreconresultsglobal.lcr_calls|intcomma }}</td><td class="lcrRRO"><img src="/chart/rr/{{ r.id }}/10.gif" /></td>
+		<td class="lcrRRI">{{ r.lcrreconresultsglobal.ext_calls|intcomma }}</td><td class="lcrRRO"><img src="/chart/rr/{{ r.id }}/20.gif" /></td>
+	</tr>
+	<tr>
+		<th>Seconds:</th>
+		<td class="lcrRRI">{{ r.lcrreconresultsglobal.lcr_secs|intcomma }}</td><td class="lcrRRO"><img src="/chart/rr/{{ r.id }}/11.gif" /></td>
+		<td class="lcrRRI">{{ r.lcrreconresultsglobal.ext_secs|intcomma }}</td><td class="lcrRRO"><img src="/chart/rr/{{ r.id }}/21.gif" /></td>
+	</tr>
+	<tr>
+		<th>Unmatched Calls:</th>
+		<td class="lcrRRI">{{ r.lcrreconresultsglobal.lcr_unmatched|intcomma }}</td><td class="lcrRRO"><img src="/chart/rr/{{ r.id }}/12.gif" /></td>
+		<td class="lcrRRI">{{ r.lcrreconresultsglobal.ext_unmatched|intcomma }}</td><td class="lcrRRO"><img src="/chart/rr/{{ r.id }}/22.gif" /></td>
+	</tr>
+	<tr>
+		<th>Unmatched Seconds:</th>
+		<td colspan="2">{{ mlcr|intcomma }}</td>
+		<td colspan="2">{{ mext|intcomma }}</td>
+	</tr>
+	<tr>
+		<th>Disputed Calls:</th>
+		<td colspan="3" class="lcrRRI">{{ r.lcrreconresultsglobal.diff_calls|intcomma }}</td><td class="lcrRRO"><img src="/chart/rr/{{ r.id }}/30.gif" /></td>
+	</tr>
+	<tr>
+		<th>ACD Distribution:</th>
+		<td colspan="3" class="lcrRRI">Max. ACD: {{ r.get_mac|intcomma }} seconds, Longer calls: {{ len_overmacs|intcomma }}</td>
+		<td class="lcrRRO"><img src="/chart/mac/{{ r.id }}.gif" /></td>
+	</tr>
+</table>
+
+<p class="stTit">View Result CDRs</p>
+
+<table class="lcrED">
+	<tr>
+		<th>&nbsp;</th>
+		<th>&nbsp;</th>
+		<th class="lcrHC">Description</th>
+		<th>&nbsp;</th>
+		<th class="lcrHC">Total Seconds</th>
+	</tr>
+	<tr>
+		<th><a href="#rr_cdr_dispute">Disputed Calls</a><a href="/csv_recon/{{ r.id }}-disputed.csv" target="lcrCSV"><img src="/media/graph/csv.png" /></a></th>
+		<td colspan="3" class="lcrDL">Calls that we matched between the LCR and EXT databases, but have the duration difference bigger than Tolerance x 2</td>
+		<td>{{ r.secs_disputed|intcomma }}</td>
+	</tr>
+	<tr>
+		<th><a href="#rr_cdr_miss_lcr">Missing Calls - LCR</a><a href="/csv_recon/{{ r.id }}-misslcr.csv" target="lcrCSV"><img src="/media/graph/csv.png" /></a></th>
+		<td colspan="3" class="lcrDL">Calls found in LCR database, for which it was impossible to find a call to a matching number in EXT CDR in 60 seconds window</td>
+		<td>{{ r.secs_miss_lcr|intcomma }}</td>
+	</tr>
+	<tr>
+		<th><a href="#rr_cdr_miss_ext">Missing Calls - EXT</a><a href="/csv_recon/{{ r.id }}-missext.csv" target="lcrCSV"><img src="/media/graph/csv.png" /></a></th>
+		<td colspan="3" class="lcrDL">Calls found in EXT CDR, for which it was impossible to find a call to a matching number in LCR database in 60 seconds window</td>
+		<td>{{ r.secs_miss_ext|intcomma }}</td>
+	</tr>
+	<tr>
+		<th><a href="#rr_cdr_overlap">Overlapped Calls</a><a href="/csv_recon/{{ r.id }}-overlap.csv" target="lcrCSV"><img src="/media/graph/csv.png" /></a></th>
+		<td colspan="3" class="lcrDL">Multiple calls to the same number at the same time found in EXT CDR</td>
+		<td>{{ r.secs_overlap|intcomma }}</td>
+	</tr>
+	<tr>
+		<th><a href="#rr_cdr_overbill">Overbilled Calls</a><a href="/csv_recon/{{ r.id }}-overbill.csv" target="lcrCSV"><img src="/media/graph/csv.png" /></a></th>
+		<td colspan="3" class="lcrDL">Calls found in EXT CDR, which were longer than Max. ACD calculated using ACD distribution algorythm - most probably hung or dead air sessions</td>
+		<td>{{ r.secs_overbill|intcomma }}</td>
+	</tr>
+
+
+
+
+</table>
+
+<a name="rr_cdr_dispute"></a>
+
+<p class="stTit">Disputed CDRs</p>
+
+<p class="stText">Calls found in both CDRs, but with an unacceptable billing duration difference.</p>
+
+<table class="lcrCDR" cellspacing="0" cellpadding="0">
+	<tr>
+		<th>LCR CDR ID:</th>
+		<th>EXT CDR ID:</th>
+		<th>LCR DATE/TIME:</th>
+		<th>EXT DATE/TIME:</th>
+		<th>LCR NUMBER:</th>
+		<th>LCR DURATION:</th>
+		<th>EXT DURATION:</th>
+		<th>EXT NUMBER:</th>
+		<th>DISPUTE:</th>
+	</tr>
+{% for cdr in cdrs_diff %}
+	<tr>
+		<td>{{ cdr.cdr_lcr.id }}</td>
+		<td>{{ cdr.cdr_ext.id }}</td>
+		<td>{{ cdr.cdr_lcr.cdr_start|date:"Y-m-d H:i:s" }}</td>
+		<td>{{ cdr.cdr_ext.cdr_start|date:"Y-m-d H:i:s" }}</td>
+		<td>{{ cdr.cdr_lcr.cdr_number }}</td>
+		<td>{{ cdr.cdr_lcr.cdr_duration }}</td>
+		<td>{{ cdr.cdr_ext.cdr_duration }}</td>
+		<td>{{ cdr.cdr_ext.cdr_number }}</td>
+		<td>{{ cdr.get_type_display }}</td>
+	</tr>
+{% endfor %}
+</table>
+
+<p class="stText"><a href="#">[ Back Up ]</a></p>
+
+<a name="rr_cdr_miss_lcr"></a>
+
+<p class="stTit">Missing CDRs</p>
+
+<p class="stText">Calls found only in the LCR database:</p>
+
+<table class="lcrCDR" cellspacing="0" cellpadding="0">
+        <tr>
+                <th>LCR CDR ID:</th>
+                <th>LCR DATE/TIME:</th>
+                <th>LCR NUMBER:</th>
+                <th>LCR DURATION:</th>
+                <th>DISPUTE:</th>
+        </tr>
+{% for cdr in cdrs_miss_lcr %}
+        <tr>
+                <td>{{ cdr.cdr_lcr.id }}</td>
+                <td>{{ cdr.cdr_lcr.cdr_start|date:"Y-m-d H:i:s" }}</td>
+                <td>{{ cdr.cdr_lcr.cdr_number }}</td>
+                <td>{{ cdr.cdr_lcr.cdr_duration }}</td>
+                <td>{{ cdr.get_type_display }}</td>
+        </tr>
+{% endfor %}
+</table>
+
+<p class="stText"><a href="#">[ Back Up ]</a></p>
+
+<a name="rr_cdr_miss_ext"></a>
+
+<p class="stText">Calls found only in the EXT CDRs:</p>
+
+<table class="lcrCDR" cellspacing="0" cellpadding="0">
+        <tr>
+                <th>EXT CDR ID:</th>
+                <th>EXT DATE/TIME:</th>
+                <th>EXT DURATION:</th>
+                <th>EXT NUMBER:</th>
+                <th>DISPUTE:</th>
+        </tr>
+{% for cdr in cdrs_miss_ext %}
+        <tr>
+                <td>{{ cdr.cdr_ext.id }}</td>
+                <td>{{ cdr.cdr_ext.cdr_start|date:"Y-m-d H:i:s" }}</td>
+                <td>{{ cdr.cdr_ext.cdr_duration }}</td>
+                <td>{{ cdr.cdr_ext.cdr_number }}</td>
+                <td>{{ cdr.get_type_display }}</td>
+        </tr>
+{% endfor %}
+</table>
+
+<p class="stText"><a href="#">[ Back Up ]</a></p>
+
+<a name="rr_cdr_overlap"></a>
+
+<p class="stTit">Overlapping Calls</p>
+
+<p class="stText">Calls in the EXT CDRs that overlap each other:</p>
+
+<table class="lcrCDR" cellspacing="0" cellpadding="0">
+	<tr>
+		<th>CALL/A CDR ID:</th>
+		<th>CALL/A DATE/TIME:</th>
+		<th>CALL/A DURATION:</th>
+		<th>CALL/A NUMBER:</th>
+		<th>CALL/B CDR ID:</th>
+		<th>CALL/B DATE/TIME:</th>
+		<th>CALL/B DURATION:</th>
+		<th>CALL/B NUMBER:</th>
+	</tr>
+{% for cdr in cdrs_over %}
+	<tr>
+		<td>{{ cdr.cdr_ext_1.id }}</td>
+		<td>{{ cdr.cdr_ext_1.cdr_start|date:"Y-m-d H:i:s" }}</td>
+		<td>{{ cdr.cdr_ext_1.cdr_duration|intcomma }}</td>
+		<td>{{ cdr.cdr_ext_1.cdr_number }}</td>
+		<td>{{ cdr.cdr_ext_2.id }}</td>
+		<td>{{ cdr.cdr_ext_2.cdr_start|date:"Y-m-d H:i:s" }}</td>
+		<td>{{ cdr.cdr_ext_2.cdr_duration|intcomma }}</td>
+		<td>{{ cdr.cdr_ext_2.cdr_number }}</td>
+	</tr>
+{% endfor %}
+</table>
+
+<p class="stText"><a href="#">[ Back Up ]</a></p>
+
+<a name="rr_cdr_overbill"></a>
+
+<p class="stTit">Dead Air Calls:</p>
+
+<p class="stText">Calls with duration longer than Max ACD, based on discrete ACD distribution (i = 10s, d = 120s):</p>
+
+<table class="lcrCDR" cellspacing="0" cellpadding="0">
+        <tr>
+                <th>EXT CDR ID:</th>
+                <th>EXT DATE/TIME:</th>
+                <th>EXT DURATION:</th>
+                <th>EXT NUMBER:</th>
+                <th>DISPUTE:</th>
+        </tr>
+{% for cdr in r.get_overmacs %}
+        <tr>
+                <td>{{ cdr.id }}</td>
+                <td>{{ cdr.cdr_start|date:"Y-m-d H:i:s" }}</td>
+                <td>{{ cdr.cdr_duration }}</td>
+                <td>{{ cdr.cdr_number }}</td>
+                <td>Dead Air / Hung Call</td>
+        </tr>
+{% endfor %}
+</table>
+
+<p class="stText"><a href="#">[ Back Up ]</a></p>
+
+
+{% endblock %}

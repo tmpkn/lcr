@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<form action="/retail/edit_service/{{ service.id }}/" method="POST">
+
+<p class="stTit">Edit Service #{{ service.id }} - {{ service.name }}</p>
+
+<p class="stText">Use the following table to make changes to your existing Retail Service. Please be extremely cautious when editing active Services, as changes saved here are processed immediately by the system.</p>
+
+<table class="lcrED">
+<tr>
+	<th>Service Type:</th>
+	<td>{{ service.get_type_display }}</td>
+</tr>
+{{ sform.as_table }}
+</table>
+
+<p class="stText"><u>Service Profile:</u></p>
+
+<table class="lcrED">
+{{ spform.as_table }}
+<tr>
+	<td colspan="2"><input type="submit" value="Save Changes" /></td>
+</tr>
+</table>
+
+</form>
+
+{% if service.type == 1 %}
+
+<!-- MOD_INCLUDE -->
+
+<p class="stTit">MOD-INCLUDE Destinations</p>
+
+<p class="stText"><u>Attached Destinations</u> - According to current M_INCL default policy, these destinations are <b>{% if service.get_profile.mod_include_policy == 1 %}NOT {% endif %}MATCHED</b> by MOD-INCLUDE.</p>
+
+<table class="lcrECR">
+	<tr>
+		<th>&nbsp;</th>
+		<th>Destination</th>
+		<th>&nbsp;</th>
+		<th>Sub-Dests.</th>
+		<th>Prefixes</th>
+		<th>&nbsp;</th>
+	</tr>
+{% for link in service.get_mod_include_destinations %}
+	<tr>
+		<td colspan="3"><a href="/retail/edit_destination/{{ link.destination.id }}/">{{ link.destination }}</a></td>
+		<td>{{ link.destination.num_subdestinations }}</td>
+		<td>{{ link.destination.num_prefixes }}</td>
+		<td><a href="/retail/del_service_mod_destination/{{ link.id }}/">Detach</a></td>
+	</tr>
+{% endfor %}
+</table>
+
+<form action="/retail/add_service_mod_destination/{{ service.id }}/1/" method="post">
+
+<p class="stText"><u>Attach new Destination</u></p>
+
+<table class="lcrED">
+{{ mform.as_table }}
+<tr>
+	<td colspan="2"><input type="submit" value="Attach to MOD-INCLUDE" /></td>
+</table>
+	
+</form>
+
+<!-- MOD_VOLUME -->
+
+<p class="stTit">MOD-VOLUME Destinations</p>
+
+<p class="stText"><u>Attached Destinations</u> - According to current M_VOL default policy, these destinations are <b>{% if service.get_profile.mod_volume_policy == 1 %}NOT {% endif %}MATCHED</b> by MOD-VOLUME.</p></p>
+
+<table class="lcrECR">
+	<tr>
+		<th>&nbsp;</th>
+		<th>Destination</th>
+		<th>&nbsp;</th>
+		<th>Sub-Dests.</th>
+		<th>Prefixes</th>
+		<th>&nbsp;</th>
+	</tr>
+{% for link in service.get_mod_volume_destinations %}
+	<tr>
+		<td colspan="3"><a href="/retail/edit_destination/{{ link.destination.id }}/">{{ link.destination }}</a></td>
+		<td>{{ link.destination.num_subdestinations }}</td>
+		<td>{{ link.destination.num_prefixes }}</td>
+		<td><a href="/retail/del_service_mod_destination/{{ link.id }}/">Detach</a></td>
+	</tr>
+{% endfor %}
+</table>
+
+<form action="/retail/add_service_mod_destination/{{ service.id }}/3/" method="post">
+
+<p class="stText"><u>Attach new Destination</u></p>
+
+<table class="lcrED">
+{{ mform.as_table }}
+<tr>
+	<td colspan="2"><input type="submit" value="Attach to MOD-VOLUME" /></td>
+</table>
+	
+</form>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,1260 @@
+*
+{
+	margin: 0px;
+	border: 0px none;
+	padding: 0px;
+}
+
+body
+{
+	color: #2E2E2E;
+	font-family: "Trebuchet MS", sans-serif;
+	font-size: 12px;
+}
+
+a
+{
+	color: #006599;
+	color: #fa6b00;
+	text-decoration: none;
+}
+
+a:hover
+{
+	text-decoration: underline;
+}
+
+td
+{
+	border: 1px solid #000;
+	padding: 2px 3px;
+}
+
+td.tdprice
+{
+	text-align: center;
+}
+
+tr:hover, tr.ctx_hide:hover
+{
+	background-color: #cfcfcf;
+}
+
+table
+{
+	margin: 10px 20px;
+}
+
+input, select, textarea
+{
+	border: 1px solid #000;
+	margin: 0px 10px 0px 30px;
+}
+
+input.ior
+{
+	border: 0px none;
+	margin: 0px;
+}
+
+input.cfSubmit
+{
+	margin: 5px 0px 25px 175px;
+}
+
+.lcrHM th
+{
+	width: 150px;
+	padding-right: 10px;
+	text-align: right;
+}
+
+.lcrHM td
+{
+	text-align: center;
+	width: 140px;
+	border: 0px none;
+}
+
+.lcrECR td, .lcrECR th
+{
+	width: 112px;
+}
+
+.lcrECR td, .lcrMEB td, .lcrED td
+{
+	padding: 4px 0px;
+	text-align: center;
+	background-color: #ececec;
+	border: 0px none;
+	vertical-align: middle;
+}
+
+.lcrED td
+{
+	width: 270px;
+}
+
+.lcrED th
+{
+	width: 160px;
+	text-align: right;
+	padding-right: 10px;
+}
+
+.lcrED input, .lcrED select, .lcrED textarea
+{
+	border: 0px none;
+	width: 200px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.lcrED textarea.lcrEDE164
+{
+	width: 220px;
+	height: 146px;
+}
+
+.lcrED td.lcrEDList
+{
+	text-align: left;
+	padding-left: 10px;
+}
+
+.lcrRESRECON img
+{
+	float: right;
+	margin: 0px;
+	padding: 0px;
+}
+
+.lcrRESRECON td.lcrRRO
+{
+	padding: 0px;
+	width: 200px;
+}
+
+.lcrRESRECON td.lcrRRI
+{
+	width: 100px;
+}
+
+
+.lcrMEB td
+{
+	width: 560px;
+	text-align: left;
+	padding: 4px 0px;
+	padding-left: 10px;
+}
+
+.lcrMEB input, .lcrMEB select, .lcrMEB textarea
+{
+	border: 0px none;
+	width: 540px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.lcrHM th, .lcrHM td, .lcrSTT1 th, .lcrMC th, .lcrMC td, .lcrECR th, .lcrMEB th, .lcrED th
+{
+	border-top: 0px none;
+	border-left: 0px none;
+	border-right: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+}
+
+.lcrSTT1 th, .lcrSTT1 td
+{
+	width: 275px;
+}
+
+.lcrST1Comp td
+{
+	text-align: center;
+}
+
+.lcrSTT1 td
+{
+	vertical-align: top;
+}
+
+.lcrMC tr:hover
+{
+	background-color: transparent;
+}
+
+.lcrMC th
+{
+	font-weight: normal;
+}
+
+.lcrMC th.lcrMCT
+{
+	font-weight: bold;
+	border-right: 1px solid #FA6B00;
+	border-bottom: 1px solid #FA6B00;
+	text-align: center;
+}
+
+tr.lcrMCH
+{
+	display: none;
+}
+
+.lcrMC td
+{
+	background-color: #ececec;
+	padding: 0px;
+	text-align: center;
+	vertical-align: middle;
+	width: 240px;
+	height: 30px;
+}
+
+.lcrMC input, .lcrMC select, .lcrMC textarea
+{
+	border: 0px none;
+	margin: 0px;
+	width: 220px;
+}
+
+.lcrMC textarea
+{
+	height: 100px;
+}
+
+.lcrMC th
+{
+	padding-right: 10px;
+	text-align: right;
+	width: 180px;
+}
+
+.lcrHM a
+{
+	font-weight: bold;
+	color: #fa6b00;
+}
+
+.lcrH span
+{
+	font-weight: bold;
+	color: #f00;
+}
+
+hr
+{
+	padding: 1px 10px;
+	margin: 5px 10px;
+	border: 0px none;
+	border-top: 1px solid #000;
+}
+
+li
+{
+	margin-left: 30px;
+}
+
+tr.ctx_hide
+{
+	display: none;
+}
+
+tr.ctx_show, tr.ctx_hide
+{
+	background-color: #aaa;
+	font-size: 9px;
+}
+
+.ctc_hide
+{
+	display: none;
+}
+
+#lcrHeader img
+{
+	margin-left: 25px;
+}
+
+#lhMenu
+{
+	margin-top: 15px;
+	margin-right: 25px;
+	float: right;
+	text-align: right;
+}
+
+#lcrFooter
+{
+	padding: 25px 10px 10px 10px;
+	text-align: center;
+}
+
+p.stTit, p.stText
+{
+	margin: 10px 20px;
+}
+
+#panCont p.stText
+{
+	width: 800px;
+}
+
+#panCont p.stText span
+{
+	color: #CA1020;
+	font-weight: bold;
+}
+
+p.stCenter
+{
+	text-align: center;
+}
+
+p.stTit
+{
+	font-size: 16px;
+	font-weight: bold;
+}
+
+fieldset
+{
+	padding: 10px;
+	border: 1px solid #3a3a3a;
+}
+
+.cForm fieldset
+{
+	width: 700px;
+	margin: 20px;
+}
+
+.bForm fieldset
+{
+	width: 600px;
+}
+
+legend
+{
+	padding: 0px 10px;
+}
+
+.cForm th
+{
+	text-align: right;
+	padding-right: 10px;
+	width: 200px;
+}
+
+.cForm td
+{
+	border: 0px none;
+}
+
+.cForm input, .cForm textarea
+{
+	width: 200px;
+}
+
+.bForm input, .bForm textarea
+{
+	width: 300px;
+}
+
+.cForm select
+{
+	width: 100px;
+}
+
+.bForm select
+{
+	width: 300px;
+}
+
+.cForm tr:hover, .cForm tr.ctx_hide:hover
+{
+        background-color: #efefef;
+}
+
+table.lcrDeal
+{
+	width: 600px;
+	margin: 0px;
+}
+
+table.lcrDeal th
+{
+	background-color: #006599;
+	color: #fff;
+	font-weight: bold;
+}
+
+div.lcrDealF
+{
+	float: left;
+	margin-left: 10px;
+	margin-bottom: 20px;
+}
+
+span.lcrDT
+{
+	font-size: 9px;
+	line-height: 9px;
+}
+
+.lcrDeal img
+{
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+a.whiteA
+{
+	color: #fff;
+}
+
+td.colACD, th.colACD
+{
+	background-color: #95c5dd;
+}
+
+td.colASR, th.colASR
+{
+	background-color: #e49e9e;
+}
+
+td.colMIN, th.colMIN
+{
+	background-color: #bad2af;
+}
+
+.carTab td
+{
+	text-align: right;
+}
+
+.carTab td
+{
+	padding: 2px 5px;
+}
+
+td.mcFTSTATIC
+{
+	width: 200px;
+	padding-left: 15px;
+	background-color: #fff;
+	font-style: italic;
+}
+
+td.dsDeal
+{
+	display: none;
+}
+
+div.lcrDealT
+{
+	margin: 2px auto;
+	margin-left: 100px;
+}
+
+.dsTDok
+{
+	width: 25px;
+	background-color: #0B7000;
+	color: #fff;
+	font-weight: bold;
+}
+
+.dsTDTL9
+{
+	width: 25px;
+	background-color: #FFFFFF;
+}
+
+.dsTDTL2
+{
+	width: 25px;
+	background-color: #0B7000;
+}
+
+.dsTDTL0
+{
+	width: 25px;
+	background-color: #FF0000;
+}
+
+.bt td
+{
+	padding: 2px 5px;
+	text-align: right;
+}
+
+.bt td.btD
+{
+	text-align: left;
+}
+
+.bt td.btT
+{
+	font-weight: bold;
+	text-decoration: underline;
+	border: 0px none;
+}
+
+.bt th
+{
+	padding-top: 8px;
+}
+
+.bt th.btC
+{
+	font-size: 14px;
+	text-decoration: underline;
+	font-weight: bold;
+	padding-top: 16px;
+}
+
+.bt th.btC:hover
+{
+	background-color: #fff;
+}
+
+.qmTR1 th, .qmTR1 th:hover
+{
+	background-color: #4fad60;
+}
+
+.qmTR2 th, .qmTR2 th:hover
+{
+	background-color: #ca2424;
+}
+
+td.ddRR{
+	vertical-align: top;
+}
+
+p.lcrH
+{
+	padding: 10px;
+}
+
+div.biD
+{
+	float: left;
+	padding-right: 20px;
+}
+
+.lcrCDR td, .lcrCDR th
+{
+	width: auto;
+	padding: 2px 5px;
+	text-align: center;
+	border: 0px none;
+	font-size: 9px;
+	border-bottom: 1px solid #bcbcbc;
+}
+
+.lcrED th.lcrHC
+{
+	text-align: center;
+}
+
+.lcrED td.lcrDL
+{
+	text-align: left;
+	padding-left: 10px;
+}
+
+.lcrED th img
+{
+	margin-left: 10px;
+}
+
+.lcrRARR td
+{
+	padding: 5px 0px;
+}
+
+.lcrRARR input, .lcrRARR select
+{
+	width: 100px;
+	border: 0px none;
+	margin: 0px;
+}
+
+.lcrRARRn input
+{
+	width: 250px;
+}
+
+span.rcpin
+{
+	font-size: 14px;
+	font-weight: bold;
+	color: #f00;
+}
+
+table.mtCalls
+{
+	margin-left: 20px;
+	float: left;
+}
+
+.mtCalls td
+{
+	border: 0px none;
+	border-bottom: 1px solid #bababa;
+	padding: 3px 0px;
+}
+
+.mtCalls th
+{
+	padding: 5px;
+	border-bottom: 1px solid #3f3f3f;
+}
+
+.mtCalls td:hover, .mtCalls tr:hover, .mtCalls th:hover
+{
+	background-color: #fff;
+}
+
+td.mtCWide
+{
+	width: 220px;
+}
+
+td.mtCNum
+{
+	width: 80px;
+	text-align: center;
+}
+
+td.mtCUP, .cGR
+{
+	background-color: #c1e9c1;
+}
+
+td.mtCDOWN, .cRD
+{
+	background-color: #f9c1c1;
+}
+
+span.mtCDelta
+{
+	color: #7a7a7a;
+}
+
+.mrS
+{
+	display: none;
+}
+
+.mvtsMR td, .mvtsMR th
+{
+	border: 0px none;
+	padding: 5px;
+	border-bottom: 1px solid #acacac;
+}
+
+th.mrDest
+{
+	width: 280px;
+	text-align: right;
+	padding-right: 10px;
+	border-right: 1px solid #000;
+}
+
+.mrTHM
+{
+	font-weight: normal;
+	font-size: 10px
+}
+
+td.mrPrc, td.mrMin
+{
+	text-align: right;
+	font-size: 9px;
+}
+
+td.mrPrc
+{
+	width: 80px;
+	border-right: 1px solid #000;
+}
+
+td.mrMin
+{
+	width: 115px;
+	border-right: 1px solid #cacaca;
+}
+
+.maA td, .maA th
+{
+	padding: 5px;
+}
+
+.maA td
+{
+	font-size: 11px;
+	border: 0px none;
+	border-bottom: 1px solid #cacaca;
+}
+
+td.maChange
+{
+	text-align: right;
+}
+
+td.maStatus
+{
+	text-align: center;
+	font-weight: bold;
+}
+
+tr.maSOK, tr.raR1
+{
+	background-color: #c1e9c1;
+}
+
+tr.maSALERT, tr.maSGONE, tr.raR0
+{
+	background-color: #f9c1c1;
+}
+
+.lcrRH
+{
+	margin: 20px auto;
+	font-size: 32px;
+}
+
+.lrT td, .lrT th, .lrT input, .lrT select, .lrT textarea
+{
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.lrT input, .lrT select, .lrT textarea, .lrS
+{
+	background-color: #fffdc6;
+}
+
+.lrIW input, .lrIW select, .lrIW textarea
+{
+	width: 250px;
+}
+
+.lrT .lrIV textarea
+{
+	width: 750px;
+}
+
+.lrT textarea
+{
+	width: 250px;
+	height: 350px;
+}
+
+.lrT tr, .lrT tr:hover
+{
+	background: transparent;
+}
+
+.lrT td
+{
+	border-bottom: 1px solid #dedede;
+	padding: 10px 5px;
+	vertical-align: top;
+}
+
+.lrT li
+{
+	margin-left: 15px;
+}
+
+.lrH
+{
+	color: #7c7c7c;
+}
+
+.lrL
+{
+	width: 150px;
+}
+
+.lrF
+{
+	width: 300px;
+}
+
+.lrF li
+{
+	font-weight: bold;
+	color: #f00;
+}
+
+.lrS
+{
+	margin: 20px 0px 25px 190px;
+	padding: 0px;
+	width: 250px;
+}
+
+.tooltip{
+   position: absolute;
+   top: 0;
+   left: 0;
+   z-index: 3;
+   display: none;
+	background-color: #fdf3eb;
+	padding: 5px;
+	border: 1px solid #ec8f46;
+}
+          
+#pHead
+{
+	width: 100%;
+	height: 74px;
+	background: url(/media/graph/panel/bgtop.png) top left repeat-x;
+	position: relative;
+}
+
+#phS
+{
+	position: absolute;
+	top: 28px;
+	left: 35px;
+}
+
+#panCont
+{
+	/*width: 100%;*/
+	background: url(/media/graph/panel/grid.png) top left repeat;
+	padding: 15px 25px;
+	font-family:"Georgia", Times, serif;
+	font-size: 12px;
+} 
+
+#panBottom
+{
+	width: 100%;
+	height: 34px;
+	background: url(/media/graph/panel/bgbottom.png) top left repeat-x;
+}
+
+#panBottom
+{
+	text-align: center;
+	padding-top: 10px;
+}
+
+#panCont p.stTit
+{
+	margin-top: 15px;
+}
+
+#panCont tr:hover
+{
+	background-color: transparent;
+}
+
+#panCont td
+{
+	border: 0px none;
+	padding: 0px;
+}
+
+#panCont input.iI
+{
+	border: 0px none;
+	width: auto;
+	height: auto;
+	float: right;
+}
+
+#pcScript
+{
+	width: 649px;
+	height: 503px;
+	background: url(/media/graph/panel/el/bg_es_script.png) top left no-repeat;
+	float: left;
+	position: relative;
+}
+
+#pcActivity
+{
+	width: 649px;
+	height: 503px;
+	background: url(/media/graph/panel/el/bg_es_activity.png) top left no-repeat;
+	float: right;
+	position: relative;
+	margin-right: 20px;
+	margin-left: 30px;
+}
+
+#panCont a, #panCont .errorlist
+{
+	color: #ca1020;
+}
+
+#panCont .errorlist
+{
+	font-weight: bold;
+}
+
+.sim
+{
+	margin-left: 20px;
+}
+
+#pcsC
+{
+	width: 629px;
+	height: 450px;
+	position: absolute;
+	top: 45px;
+	left: 10px;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 14px;
+}
+
+#pcsC a
+{	
+	font-weight: bold;
+}
+
+#pcsC p
+{
+	margin-bottom: 20px;
+}
+
+#pcsC span
+{
+	font-weight: bold;
+}
+
+#cpCaller
+{
+	height: 45px;
+}
+
+#cpCaller img, #cpCaller p
+{
+	float: left;
+}
+
+#cpCaller span
+{
+	font-weight: bold;
+	text-decoration: underline;
+	color: #ca1020;
+}
+
+#cpCaller img
+{
+	margin-top: 10px;
+}
+
+#cpCaller p
+{
+	margin-top: 18px;
+	margin-left: 20px;
+}
+
+table.pcF
+{
+	float: left;
+	margin-left: 0px;
+}
+
+div.dCleaner
+{
+	width: 100%;
+	font-size: 1px;
+	height: 1px;
+	clear: both;
+}
+
+#panCont input, #panCont textarea, #panCont select
+{
+	width: 382px;
+	border: 1px solid #bdbdbd;
+	margin: 0px;
+	font-size: 13px;
+	padding: 2px 1px;
+}
+
+#panCont .pcF input, #panCont .pcF textarea, #panCont .pcF select
+{
+	margin: 5px 0px 10px 0px;
+}
+
+#panCont .pcF input.iI
+{
+	margin: 0px;
+	padding: 0px;
+}
+
+.phMenu
+{
+	float: left;
+	margin-top: 48px;
+	margin-left: 5px;
+}
+
+.phMenu a
+{
+	color: #d4081a;
+}
+
+.phMenu p
+{
+	padding-top: 5px;
+	margin-left: 10px;
+}
+
+.phMenuF
+{
+	margin-left: 35px;
+}
+
+.phLogo
+{
+	float: right;
+	margin-right: 50px;
+}
+
+.psNotLogged
+{
+	margin-left: 20px;
+}
+
+span.SASc1, span.SASc10, span.SASc100
+{
+	font-weight: bold;
+}
+
+span.SASc1
+{
+	color: #7c7c7c;
+}
+
+span.SASc10
+{
+	color: #7c7c7c;
+}
+
+span.SASc100
+{
+	color: #059512;
+}
+
+#dDealTable
+{
+	font-size: 10px;
+}
+
+.tjRight
+{
+	text-align: right;
+}
+
+.tjCenter
+{
+	text-align: center;
+}
+
+.tjMiddle
+{
+	vertical-align: middle;
+}
+
+.ddHRow, .ddHrow:hover
+{
+	background-color: #ffbc9a;
+}
+
+#ddDetails td
+{
+	border: 0px none;
+}
+
+#ddDetails tr:hover, #ddDetails td:hover
+{
+	background-color: transparent;
+}
+
+.ddTit
+{
+	color: #FA6B00;
+}
+
+.ddBig
+{
+	font-size: 13px;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.dataTables_length, .dataTables_filter, .dataTables_info, .dataTables_paginate
+{
+	margin: 10px 25px;
+}
+
+.dataTables_paginate a
+{
+	margin: 0px 10px;
+}
+
+.bmbIssued
+{
+	background-color: #ffbc9a;
+}
+
+.bmHI, .bmHI:hover
+{
+	background-color: #FA6B00;
+}
+
+#bmTable td, #bmInvoices th, #bmInvoices td, #icDetails td, #icDeals th, #icDeals td
+{
+	border: 0px none;
+}
+
+#bmTable td.calCell
+{
+	width: 15px;
+	border-left: 1px solid #aaa;
+	border-bottom: 1px solid #3c3c3c;
+	text-align: center;
+}
+
+#bmInvoices td.cBig, #bmInvoices td.cSmall, #bmInvoices th.cBig, #bmInvoices th.cSmall
+{
+	border-left: 1px solid #aaa;
+	border-bottom: 1px solid #3c3c3c;
+	text-align: center;
+}
+
+#bmInvoices td.cBig
+{
+	width: 240px;
+}
+
+#bmInvoices td.cSmall
+{
+	width: 85px;
+}
+
+#bmTable td.calLH, #bmInvoices .calLH
+{
+	width: 40px;
+	text-align: right;
+	padding-right: 10px;
+	border-bottom: 1px solid #3c3c3c;
+}
+
+.iCell
+{
+	margin-left: 20px;
+	width: 750px;
+	border-bottom: 1px dotted #ddd;
+	padding: 10px 5px;
+}
+
+#ihPartner
+{
+	text-align: right;
+}
+
+#icDeals td, #icDeals th, #icDetails td,  #icDetails th
+{
+	border-left: 1px solid #aaa;
+	border-bottom: 1px solid #3c3c3c;
+}
+
+#icDetails input
+{
+	width: 60px;
+	border: 0px none;
+	padding: 0px;
+	margin: 0px 5px;
+	background-color: #ffbc9a;
+}
+
+.icTot
+{
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.dxT td, .dxT th
+{
+	border: 0px none;
+}
+
+.dxT th
+{
+	width: 50px;
+}
+
+.dxRFooter th, .dxRFooter td
+{
+	border-top: 1px solid #000;
+}
+
+.dxT td.dxCellFinal, .dxRFooter td, .dxT th
+{
+	border-right: 1px solid #000;
+}
+
+.dxT td.dxCellNormal
+{
+	border-right: 1px solid #eee;
+	/*border-top: 1px solid #eee;*/
+}
+
+.dxT td.dxCellNormal, .dxT td.dxCellFinal
+{
+	font-size: 1px;
+	line-height: 1px;
+	width: 5px;
+	height: 5px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.dxRFooter td
+{
+	font-size: 9px;
+	text-align: center;
+}
+
+.dxT td.dxX, .dxT th.dxX
+{
+	background-color: #FA6B00;
+}
+
+.dxT tr, .dxT tr:hover
+{
+	background-color: transparent;
+}
+
+.dxSPerm, .dxSTemp
+{
+	background-color: #ddd;
+}
+
+td#txTDH
+{
+	border-bottom: 1px solid #000;
+	padding: 5px;
+	text-align: center;
+}
+
+#dxTRHead th
+{
+	border-bottom: 1px solid #000;
+}

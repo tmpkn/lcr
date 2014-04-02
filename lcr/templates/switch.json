@@ -1,0 +1,51 @@
+{
+  "elements": [
+    {
+      "type": "area",
+      "width": 1,
+      "dot-style": {
+        "type": "dot",
+        "colour": "#839096",
+        "dot-size": 3
+      },
+      "colour": "#006599",
+      "fill": "#006599",
+      "fill-alpha": 0.7,
+      "on-show": {
+        "type": "pop-up",
+        "cascade": 2,
+        "delay": 0.5
+      },
+      "values": [
+{% for hour in hours %}	{{ hour.channels }}{% if not forloop.last %},{% endif %}
+{% endfor %}
+      ]
+    }
+  ],
+  "title": {
+    "text": "{{ switch.ip_addr }}"
+  },
+  "bg_colour": "#ffffff",
+  "y_axis": {
+	"colour": "#A2ACBA",
+        "grid-colour": "#A2ACBA",
+    "min": 0,
+    "max": 1000,
+    "steps": 2,
+    "labels": null,
+    "offset": 0
+  },
+  "x_axis": {
+	"colour": "#A2ACBA",
+	"grid-colour": "#A2ACBA",
+	"offset": false,
+	"steps": {{ step }},
+    "labels": {
+      "steps": {{ l_step }},
+      "labels": [
+	{% for hour in hours %} "{{ hour.date }}"{% if not forloop.last %},{% endif %}
+	{% endfor %}	
+	]
+    }
+  }
+}

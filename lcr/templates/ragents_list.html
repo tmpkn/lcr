@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Agents List</p>
+
+<table>
+	<tr>
+		<th>ID:</th>
+		<th>Full Name:</th>
+		<th>Email Address:</th>
+		<th>Phone Number:</th>
+		<th>VoIP Number:</th>
+		<th>WEB Username:</th>
+		<th>WEB/Voip Password:</th>
+	</tr>
+
+{% for a in agents %}
+<tr>
+	<td>{{ a.user.id }}</td>
+	<td>{{ a.user.first_name }} {{ a.user.last_name }}</td>
+	<td>{{ a.user.email }}</td>
+	<td>{{ a.phone }}</td>
+	<td>{{ a.get_ara.name }}</td>
+	<td>{{ a.user.username }}</td>
+	<td>{{ a.get_ara.secret }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

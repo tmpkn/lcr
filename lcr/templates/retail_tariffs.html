@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Retail Tariffs</p>
+
+<p class="stText"><a href="/retail/add_tariff/">Add New Tariff</a></p>
+
+<p class="stText">Please pick the tariff you want to manage from the following table:</p>
+
+<table class="lcrED">
+{% for tariff in tariffs %}
+	<tr>
+		<th><a href="/retail/edit_tariff/{{ tariff.id }}/">{{ tariff.name }}</a></th>
+		<td>Prefixes: {{ tariff.num_prefixes }}</td>
+		<td>Sub-tariffs: {{ tariff.num_subtariffs }}</td>
+		<td>Used in Services: {{ tariff.num_services }}</td>
+	</tr>
+{% endfor %}
+</table>
+
+
+{% endblock %}

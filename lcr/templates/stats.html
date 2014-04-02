@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<form action="/stats/" method="POST">
+	{{ form.as_ul }}
+<input type="submit" value="GO" />
+</form>
+{% endblock %}

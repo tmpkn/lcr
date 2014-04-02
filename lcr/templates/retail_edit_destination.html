@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Edit Destination: {{ destination }}</p>
+
+<p class="stText">Use the following table to make changes to your existing Retail Destination. Changes saved here are processed immediately by the system.</p>
+
+<table class="lcrED">
+<form action="/retail/edit_destination/{{ destination.id }}/" method="POST">	
+{{ dform.as_table }}
+<tr>
+	<td colspan="2"><input type="submit" value="Save Changes" /></td>
+</tr>
+</form>
+<form action="/retail/add_destination_e164/{{ destination.id }}/" method="POST">
+<tr>
+	<td colspan="2">
+	{% for e164 in destination.get_prefixes %}
+		{{ e164.prefix}}&nbsp;<a href="/retail/delete_destination_e164/{{ e164.id }}/">[X]</a>&nbsp;&nbsp;&nbsp;
+	{% endfor %}
+	</td>
+</tr>
+<tr>
+	<td colspan="2"><textarea class="lcrEDE164" id="f_codes" name="f_codes"></textarea></td>
+</tr>
+<tr>
+	<td colspan="2"><input type="submit" value="Add E164 Prefixes" /></td>
+</tr>
+</table>
+
+
+
+
+{% endblock %}

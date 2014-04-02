@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<p class="stTit">Email Database</p>
+<table>
+<form action="/email/index/" method="POST">
+	{{ sjf.as_table }}
+</table>
+<input type="submit" value="GO" />
+</form>
+
+<p class="stTit">Existing Records:</p>
+
+<table>
+<tr>
+	<th>ID</th>
+	<th>Filename</th>
+	<th>Count</th>
+	<th>Status</th>
+	<th>Campaign #1</th>
+	<th>Campaign #2</th>
+	<th>S. Country</th>
+	<th>&nbsp;</th>
+</tr>
+{% for sj in sjobs %}
+<tr>
+	<td>{{ sj.id }}</td>
+	<td>{{ sj.filename }}</td>
+	<td>{{ sj.count }}</td>
+	<td>{{ sj.get_status_display }}</td>
+	<td>{{ sj.campaign_1 }}</td>
+	<td>{{ sj.campaign_2 }}</td>
+	<td>{{ sj.scountry }}</td>
+	<td><a href="/email/delete/{{ sj.id }}/">[DELETE]</a></td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

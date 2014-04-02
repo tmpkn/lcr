@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Live Calls</p>
+
+<p class="stText">The table below shows the deals that were active in the last hour. To get the timestamp of a particular update, please put your cursor over the deal ID. Data in the table has been calculated using traffic statistics. Number of channels is an <b>average</b> value for 1 hour period up to the timestamp.</p>
+
+<p class="stText">For detailed information about deals traffic, please visit <a href="/dashboard/">The Dashboard</a>.</p>
+
+<table>
+	<tr>
+		<th>DID</th>
+		<th>Customer</th>
+		<th>Cust. IP</th>
+		<th>Supplier</th>
+		<th>Destination</th>
+		<th>Chans</th>
+		<th>ACD</th>
+		<th>ASR</th>
+	</tr>
+{% for deal in deals %}
+	<tr>
+		<td><a title="Updated: {{ deal.last_pu2.dt_when }}" href="/edit_deal/{{ deal.id }}/">#{{ deal.id }}</a></td>
+		<td>{{ deal.buy_carrier.carrier }}</td>
+		<td>{{ deal.buy_carrier.switch.ip_addr }}</td>
+		<td>{{ deal.destination.supplier.carrier }}</td>
+		<td>{{ deal.destination.name }}</td>
+		<td>{{ deal.avg_chans }}</td>
+		<td>{{ deal.last_pu2.acd }} s</td>
+		<td>{{ deal.last_pu2.asr|floatformat:"-2" }} %</td>
+	</tr>
+{% endfor %}
+</table>
+
+<p class="stTit">VoipSwitch SQL / livecalls Table</p>
+
+<p class="stText">The following tables show the content of [livecalls] MySQL tables for the VoipSwitch servers in your network. Make sure you only use the data if you have full knowledge of MySQL, SIP/RTCP protocols and internal structure of VoipSwitch engine. Do <b>NOT</b> confuse the content of these tables with the actual live traffic or billing information.</p>
+
+{% for live in lives %}
+<p class="stTit">{{ live.switch }}</p>
+<table>
+	<tr>
+		<th>SW/Cust:</th>
+		<th>Tariff:</th>
+		<th>Channels:</th>
+	</tr>
+{% for off in live.o %}
+	<tr>
+	{% for offs in off %}
+		<td>{{ offs }}</td>
+	{% endfor %}
+	</tr>
+{% endfor %}
+</table>
+
+{% endfor %}
+
+{% endblock %}

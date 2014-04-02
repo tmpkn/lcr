@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<p class="stText">Here's the Partners' Carriers List. Be <u><b>EXTREMELY CAREFUL</b></u> when deleting a carrier, as this <u><b>PERMANENTLY</b></u> removes <u><b>ALL DATA</b></u> related to that Carrier (incl. Customers, Suppliers, CDRs, Deals, Payments, etc.).</p>
+{% for partner in partners %}
+<p class="stTit">{{ partner }}</p>
+<table>
+
+	{% for carrier in partner.carriers %}
+	<tr>
+		<td>{{ carrier.name }}</td>
+		<td>{{ carrier.num_customers }} Customers</td>
+		<td><a href="/add_carrier_customer/{{ carrier.id }}/">Add Customer</a></td>
+		<td>{{ carrier.num_suppliers }} Suppliers</td>
+		<td><a href="/add_carrier_supplier/{{ carrier.id }}/">Add Supplier</a></td>
+		<td><a href="/edit_carrier/{{ carrier.id }}/">Details</a></td>
+		<td><a href="#">[X]</a></td>
+	</tr>
+	{% endfor %}
+
+</table>
+{% endfor %}
+
+{% endblock %}

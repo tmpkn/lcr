@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Deal Management : LCR#{{ deal.id }}</p>
+<p class="stText">Please use the form below to manage an existing LCR Deal. If you're using VoipSwitches to handle its traffic, make sure to purge customer's Dial Plan <u><b>after</b></u> submitting the changes.</p>
+<form action="/edit_deal/{{ deal.id }}/" method="POST">
+
+<table class="lcrED">
+	<tr>
+		<th>&nbsp;</th>
+		<th>CUSTOMER</th>
+		<th>SUPPLIER</th>
+	</tr>
+	<tr>
+		<th>Carrier:</th>
+		<td><a href="/edit_carrier/{{ deal.buy_carrier.carrier.id }}/">{{ deal.buy_carrier.carrier.name }}</a></td>
+		<td><a href="/edit_carrier/{{ deal.destination.supplier.carrier.id }}/">{{ deal.destination.supplier.carrier.name }}</a></td>
+	</tr>
+	<tr>
+		<th>Partner:</th>
+		<td>{{ deal.buy_carrier.carrier.partner }}</td>
+		<td>{{ deal.destination.supplier.carrier.partner }}</td>
+	</tr>
+	<tr>
+		<th>Destination:</th>
+		<td colspan="2"><a href="/dest_details/{{ deal.destination.id }}/">{{ deal.destination.name }}</a></td>
+	</tr>
+	<tr>
+		<th>IP Address:</th>
+		<td><a href="/edit_customer/{{ deal.buy_carrier.id }}/">{{ deal.buy_carrier.switch.ip_addr }}</a></td>
+		<td><a href="/dest_details/{{ deal.destination.id }}/">{{ deal.destination.ip_addr }}</a></td>
+	</tr>
+	<tr>
+		<th>Price:</th>
+		<td>${{ deal.buy_price }}</td>
+		<td>${{ deal.sell_price }}</td>
+	</tr>
+	<tr>
+		<th>EMS ID:</th>
+		<td>{{ f.ems_pid_buyer }}</td>
+		<td>{{ f.ems_pid_seller }}</td>
+	</tr>
+	<tr>
+		<th>ToD Tariff:</th>
+		<td colspan="2">{{ deal.tod }}</td>
+	</tr>
+	<tr>
+		<th>Tech Prefix:</th>
+		<td colspan="2">{{ deal.get_str_tech_prefix }}</td>
+	</tr>
+	<tr>
+		<th>Routing Priority:</th>
+		<td>{{ f.priority }}</td>
+		<td rowspan="2"><!--<a href="/purge_customer/{{ deal.buy_carrier.id }}/">Purge customer's VS DP</a>-->
+	</tr>
+	<tr>
+		<th>Is Active?</th>
+		<td>{{ f.is_active }}</td>
+	</tr>
+	<tr>
+		<td colspan="3"><input type="submit" value="Submit Changes" /></td>
+	</tr>
+</table>
+
+</form>
+<!--
+<p class="stTit">Add a Breakout Code:</p>
+
+<form action="/add_code/{{ deal.id }}/" method="POST">
+<table>
+	{{ fc }}
+</table>
+<input type="submit" value="ADD CODE" />
+</form>
+
+<p class="stTit">Browse Breakout Codes:</p>
+
+<table>
+
+	<tr>
+		<th>Breakout Code</th>
+		<th>Delete</th>
+	</tr>
+
+{% for code in codes %}
+	<tr>
+		<td>{{ code.vs_prefix }}</td>
+		<td><a href="/delete_code/{{ code.id }}/">[X]</a></td>
+	</tr>
+{% endfor %}
+
+</table>
+-->
+
+{% endblock %}

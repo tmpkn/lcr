@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">MVTS-Pro1 Live Dashboard</p>
+
+<script type="text/javascript" src="/media/js/crc.js"></script>
+<script type="text/javascript">
+
+arrCALLS = {}
+arrCUSTOMERS = {}
+arrSUPPLIERS = {}
+arrFVALS_A = {}
+arrFVALS_B = {}
+var dt_when_A = 0
+var dt_when_B = 0
+
+function setStatus(strStatus) {
+	$('#mStat').text(strStatus);
+}
+
+function updateTabs() {
+	setStatus('UPDATING');
+	$.getJSON('/ajax/mera/calls/', updateTabs_pre_cpu);
+}
+
+function tableHeaders() {
+	$('<tr></tr>').attr('id', 'mtCustH').appendTo('#mtCust');
+	$('<th></th>').text('Customer').appendTo('#mtCustH');
+	$('<th></th>').text('Destination').appendTo('#mtCustH');
+	$('<th></th>').text('Calls').appendTo('#mtCustH');
+	$('<th></th>').text('Calls').appendTo('#mtCustH');
+	$('<tr></tr>').attr('id', 'mtSuppH').appendTo('#mtSupp');
+	$('<th></th>').text('Supplier').appendTo('#mtSuppH');
+	$('<th></th>').text('Destination').appendTo('#mtSuppH');
+	$('<th></th>').text('Calls').appendTo('#mtSuppH');
+	$('<th></th>').text('Calls').appendTo('#mtSuppH');
+}
+
+function keys(obj) {
+	var keys = [];
+	for (var key in obj) {
+		keys.push(key);
+	}
+	return keys;
+}
+
+function updateTabs_pre_cpu(data) {
+	if (data['dt_when'] == dt_when_A) {
+		setStatus('IDLE');
+        	setTimeout('updateTabs();', 1000);
+	} else {
+		dt_when_A = data['dt_when'];
+		updateTabs_cpu(data);
+	} 
+}
+
+function updateTabs_cpu(data) {
+	setStatus('PROCESSING');
+	arrCUSTOMERS = {}
+	arrSUPPLIERS = {}
+	arrCALLS = data;
+	$('#mtCust').empty();
+	$('#mtSupp').empty();
+	tableHeaders();
+	$.each(data['calls_customer'], function(index, value) {
+		var customer = index;
+		if (!(customer in arrCUSTOMERS)) {
+			arrCUSTOMERS[customer] = {}
+		}
+		$.each(value, function(index2, value2) {
+			var dialpeer = index2;
+			if (!(dialpeer in arrCUSTOMERS[customer])) {
+				arrCUSTOMERS[customer][dialpeer] = value2;
+			}
+		});	
+	});
+	$.each(data['calls_supplier'], function(index, value) {
+                var supplier = index;
+                if (!(supplier in arrSUPPLIERS)) {
+                        arrSUPPLIERS[supplier] = {}
+                }
+                $.each(value, function(index2, value2) {
+                        var dialpeer = index2;
+                        if (!(dialpeer in arrSUPPLIERS[supplier])) {
+                                arrSUPPLIERS[supplier][dialpeer] = value2;
+                        }
+                });
+        });
+	sorted_arrCUSTOMERS = keys(arrCUSTOMERS).sort();
+	for (var p in sorted_arrCUSTOMERS) {
+		index_customer = sorted_arrCUSTOMERS[p];
+		value_customer = arrCUSTOMERS[sorted_arrCUSTOMERS[p]];
+	//$.each(arrCUSTOMERS, function(index_customer, value_customer) {
+		var counter_customer = 0;
+		var length_customer = 0;
+		var calls_customer = 0;
+		var connecting_customer = 0;
+		$.each(value_customer, function(index_peer, value_peer) {
+			length_customer = length_customer + 1;
+			calls_customer = calls_customer + value_peer['connected'].length;
+		});
+		sorted_value_customer = keys(value_customer).sort();
+		for (var x in sorted_value_customer) {
+		//$.each(value_customer, function(index_peer, value_peer) {
+			index_peer = sorted_value_customer[x];
+			var lcd_str = '';
+			if (index_peer == '') {
+				index_peer = '- CONNECTING -';
+			} else {
+                                var sum_d = 0; 
+                                for (var xi in value_peer['connected']) {
+                                        sum_d = sum_d + value_peer['connected'][xi];
+                                }                                
+				if (main_num > 0) {
+                                        lcd_str = ' [' + Math.round(sum_d / main_num) + 's]';
+                                }
+                        }
+			value_peer = value_customer[sorted_value_customer[x]];
+			main_num = value_peer['connected'].length;
+			if (index_peer == '- CONNECTING -') {
+				main_num = value_peer['trying'].length;
+				connecting_customer = main_num;
+			}
+			var id_row = crc32('CUST_' + index_customer + '_' + index_peer);
+			if (!($('#' + id_row) > 0)) {
+                        	$('<tr></tr>').attr('id', id_row).appendTo('#mtCust');
+	                }
+			if (counter_customer == 0) {
+				$('<td></td>').attr('rowspan', length_customer).attr('class', 'mtCWide').text(index_customer).appendTo('#' + id_row);
+			}
+			$('<td></td>').text(index_peer).attr('class', 'mtCWide').appendTo('#' + id_row);
+			arrFVALS_B[id_row] = main_num;
+                        var n_class = '';
+                        var n_delta = 0;
+                        if (id_row in arrFVALS_A) {
+                                if (arrFVALS_B[id_row] >= arrFVALS_A[id_row]) {
+                                        n_class = ' mtCUP';
+                                }
+                                if (arrFVALS_B[id_row] < arrFVALS_A[id_row]) {
+                                        n_class = ' mtCDOWN';
+                                }
+                                n_delta = arrFVALS_B[id_row] - arrFVALS_A[id_row];
+                        }
+			var p_sign = '';
+			if (n_delta >= 0) {
+				p_sign = '+';
+			}
+			var delta_str = '';
+			if ($('#mo_deltas').attr('checked')) {
+				delta_str = ' (' + p_sign + n_delta + ')';
+			}
+			$('<span></span>').text(delta_str + lcd_str).attr('class', 'mtCDelta').appendTo(
+				$('<td></td>').text(main_num).attr('class', 'mtCNum' + n_class).appendTo('#' + id_row)
+			);
+			if (counter_customer == 0) {
+				$('<span></span>').attr('class', 'mtCDelta').text(' (' + Math.round(connecting_customer * 100 / calls_customer) + '%)').appendTo(
+					$('<td></td>').attr('rowspan', length_customer).attr('class', 'mtCNum').text(calls_customer).appendTo('#' + id_row)
+			);
+			}
+			counter_customer = counter_customer + 1;
+		}//);
+	}//);
+	sorted_arrSUPPLIERS = keys(arrSUPPLIERS).sort();
+	for (var p in sorted_arrSUPPLIERS) {
+	//$.each(arrSUPPLIERS, function(index_supplier, value_supplier) {
+                index_supplier = sorted_arrSUPPLIERS[p];
+		value_supplier = arrSUPPLIERS[sorted_arrSUPPLIERS[p]];
+		var counter_supplier = 0;
+                var length_supplier = 0;
+                var calls_supplier = 0;
+                $.each(value_supplier, function(index_peer, value_peer) {
+                        length_supplier = length_supplier + 1;
+                        calls_supplier = calls_supplier + value_peer['connected'].length;
+                });
+		sorted_value_supplier = keys(value_supplier).sort();
+		for (var x in sorted_value_supplier) {
+                //$.each(value_supplier, function(index_peer, value_peer) {
+                        index_peer = sorted_value_supplier[x];
+			if (index_peer == '') {
+				index_peer = '- CONNECTING -';
+			}
+			value_peer = value_supplier[sorted_value_supplier[x]];
+			main_num = value_peer['connected'].length;
+			lcd_str = '';
+			if (index_peer == '- CONNECTING -') {
+				main_num = value_peer['trying'].length;
+			} else {
+				var sum_d = 0; 
+				for (var xi in value_peer['connected']) {
+					sum_d = sum_d + value_peer['connected'][xi];
+				}
+				if (main_num > 0) {
+					lcd_str = ' [' + Math.round(sum_d / main_num) + 's]';
+				}
+			}
+			var id_row = crc32('SUPP_' + index_supplier + '_' + index_peer);
+                        if (!($('#' + id_row) > 0)) {
+                                $('<tr></tr>').attr('id', id_row).appendTo('#mtSupp');
+                        }
+                        if (counter_supplier == 0) {
+                                $('<td></td>').attr('rowspan', length_supplier).attr('class', 'mtCWide').text(index_supplier).appendTo('#' + id_row);
+                        }
+                        $('<td></td>').text(index_peer).attr('class', 'mtCWide').appendTo('#' + id_row);
+			arrFVALS_B[id_row] = value_peer['connected'].length;
+			var n_class = '';
+			var n_delta = 0;
+			if (id_row in arrFVALS_A) {
+				if (arrFVALS_B[id_row] >= arrFVALS_A[id_row]) {
+					n_class = ' mtCUP';
+				}
+				if (arrFVALS_B[id_row] < arrFVALS_A[id_row]) {
+					n_class = ' mtCDOWN';
+				}
+				n_delta = arrFVALS_B[id_row] - arrFVALS_A[id_row];
+			}
+			var p_sign = '';
+                        if (n_delta >= 0) {
+                                p_sign = '+';
+                        }
+			var delta_str = '';
+                        if ($('#mo_deltas').attr('checked')) {
+                                delta_str = ' (' + p_sign + n_delta + ')';
+                        }
+			$('<span></span>').text(delta_str + lcd_str).attr('class', 'mtCDelta').appendTo(
+	                        $('<td></td>').text(value_peer['connected'].length).attr('class', 'mtCNum' + n_class).appendTo('#' + id_row)
+			);
+                        if (counter_supplier == 0) {
+                                $('<td></td>').attr('rowspan', length_supplier).attr('class', 'mtCNum').text(calls_supplier).appendTo('#' + id_row);
+                        }
+                        counter_supplier = counter_supplier + 1;
+                }//);
+        }//);
+	$.each(arrFVALS_A, function(index, value) {
+		delete arrFVALS_A[index];
+	});
+	$.each(arrFVALS_B, function(index, value) {
+		arrFVALS_A[index] = arrFVALS_B[index];
+		delete arrFVALS_B[index];
+	});
+	setStatus('IDLE');
+	setTimeout('updateTabs();', 1000);
+}
+
+$(function() {
+	updateTabs();	
+});
+
+</script>
+
+<p class="stText">Status: <span id="mStat">IDLE</span></p>
+
+<p class="stText">Options: <input type="checkbox" name="mo_color" id="mo_color" /> <label for="mo_color">Color Boxes</label> 
+<input type="checkbox" name="mo_deltas" id="mo_deltas" /> <label for="mo_deltas">Traffic Deltas</label>
+
+<table id="mtCust" class="mtCalls" cellspacing="0" cellpadding="0">
+	<tr>
+		<th>Customer</th>
+		<th>Peer</th>
+		<th>Calls</th>
+		<th>Calls</th>
+	</tr>
+</table>
+
+<table id="mtSupp" class="mtCalls" cellspacing="0" cellpadding="0">
+	<tr>
+                <th>Supplier</th>
+                <th>Peer</th>
+                <th>Calls</th>
+                <th>Calls</th>
+        </tr>
+</table>
+
+
+{% endblock %}

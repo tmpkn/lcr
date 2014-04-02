@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<p class="stText">The following table shows <b>live></b> switch statistics for yesterday (complete) and today (up to date). It contains internal setup information and should <b>NEVER</b> be shown/copypasted to external parties. The only purpose of this page is to assist with everyday maintenance. Bear in mind, the table shows a complete flow of traffic through the switch, including the calls that are not accounted for any deal.</p>
+{% for live in lives %}
+<p class="stTit">{{ live.switch }}</p>
+<table>
+	<tr>
+		<th>Date:</th>
+		<th>Source - Trunk:</th>
+		<th>Source - IP:</th>
+		<th>Route:</th>
+		<th>Gateway:</th>
+		<th>Calls:</th>
+		<th>Minutes:</th>
+	</tr>
+{% for off in live.o %}
+	<tr>
+	{% for offs in off %}
+		<td>{{ offs }}</td>
+	{% endfor %}
+	</tr>
+{% endfor %}
+</table>
+{% endfor %}
+{% endblock %}

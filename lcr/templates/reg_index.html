@@ -1,0 +1,202 @@
+{% extends "base-register.html" %}
+
+{% load humanize %}
+
+{% block lcrContent %}
+
+<p class="stTit">We are the Tesserakt! Welcome to the new VoIP experience.</p>
+
+<p class="stText">Welcome to Tesserakt Software registration page. Very soon you will be able to benefit from all the fruits of our many years of software development.</p>
+
+<p class="stText">This automated Registration is the first step in the Licensing process. After you submit the information to Tesserakt, your request will be processed. At any time you will be able to check the status of your application, by using a unique URL assigned to your account.</p>
+
+<p class="stText">In order to make sure the process is as quick as possible, please read the following instructions carefully. Every field of the registration form has been described for extra clarity. Should you have any questions about the registration process, please do <a href="http://www.tesserakt.eu/contact">Contact Us</a> prior to filling in the form.</p>
+
+<p class="stText">If you are interested in a hosted solution (e.g. renting a dedicated server from Tesserakt or hosting your equipment in our datacentre) do not use this form, as the procedure is quite different and requires a printed agreement signature. Please, <a href="http://www.tesserakt.eu/contact">Contact Us</a> to get more information.</p>
+
+<form action="/register/" method="POST" enctype="multipart/form-data">
+
+<p class="stTit">
+Part I: Customer Information
+</p>
+
+<p class="stText">
+In this part we collect the required information about your Business. We promise not to share your information with anyone and we will not contact you unless absolutely neccessary. The company provided here will be the sole licensee of the Software License, and will accept all the responsibility for its usage, including the payments. Please have that in mind, if you're planning to use our PEX solutions.
+</p>
+
+<table class="lrT">
+
+	<tr>
+		<td class="lrL">Company Name:</td>
+		<td class="lrF lrIW">{{ f.cust_name }} {{ f.cust_name.errors }}</td>
+		<td class="lrH">The full registered name of your Business</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">Address:</td>
+		<td class="lrF lrIW">{{ f.cust_addr }} {{ f.cust_addr.errors }}</td>
+		<td class="lrH">The registered address of your Business. This address will be printed on the software invoices. Please note, this does not apply to the invoices you generate using the software, which you can fully customize to suit your needs.</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">Country:</td>
+		<td class="lrF lrIW">{{ f.cust_country }} {{ f.cust_country.errors }}</td>
+		<td class="lrH"></td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">E-mail:</td>
+		<td class="lrF lrIW">{{ f.cust_email }} {{ f.cust_email.errors }}</td>
+		<td class="lrH">Make sure to use a valid email address. It will be initially configured in the software as your partner email address (you will be able to change it afterwards).</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">Phone:</td>
+		<td class="lrF lrIW">{{ f.cust_phone }} {{ f.cust_phone.errors }}</td>
+		<td class="lrH">As promised, we will not call you unless absolutely neccessary. Please use the international phone number format.</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">Tax / VAT number:</td>
+		<td class="lrF lrIW">{{ f.cust_vat }} {{ f.cust_vat.errors }}</td>
+		<td class="lrH">If you are based within the EU VAT zone, please provide your valid VAT number. Please note, this number will be automatically checked against the <a href="http://ec.europa.eu/taxation_customs/vies/" target="tsT">VIES</a> database. If it doesn't come up as valid number, the application will be rejected. This does not apply to Businesses outside of EU VAT zone.</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">Representative:</td>
+		<td class="lrF lrIW">{{ f.cust_rep }} {{ f.cust_rep.errors }}</td>
+		<td class="lrH">Full name of the representative responsible for filling in this document and signing the Terms and Condition form.</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">ID Copy included:</td>
+		<td class="lrF">{{ f.chk_rep_id }} {{ f.chk_rep_id.errors }}</td>
+		<td class="lrH">If your business doesn't have a history with Tesserakt, please check this field and include a valid document confirming the Representative identity. We accept all the major picture and document formats. Please make sure that the document is valid and includes full name of the Representative.</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">ID Copy file:</td>
+		<td class="lrF lrIW" colspan="2">{{ f.cust_rep_id_file }} {{ f.cust_rep_id_file.errors }}</td>
+	</tr>
+
+</table>
+
+<p class="stTit">Part II: Financial Information</p>
+
+<p class="stText">Please tell us how exactly you are planning to pay for the Software usage. Some setups, like the remote TG/LCR installation require a prepay on your account in order to be active. This also applies to all the configurations which include VoIP traffic going through Tesserakt Software (LCR switch). Upon opening your account, a set up payment invoice will be generated, which needs to be paid in full prior to activating the license.</p>
+
+<p class="stText">Do note, that for prepayment of substantial amounts, we will have to complete an extra due dilligence and most probably we're going to ask you to meet us and sign the printed agreement.</p>
+
+<table class="lrT">
+
+	<tr>
+		<td class="lrL">Payment Type:</td>
+		<td class="lrF lrIW">{{ f.cust_pay_type }} {{ f.cust_pay_type.errors }}</td>
+		<td class="lrH">The preferred payment type for new customers is Escrow platform. Please notice, that your services will not be activated until the payment arrives at Tesserakt. Our bank is based in Poland, and international bank payments can take up to 2 weeks to be cleared. Bank wires are only recommended from customers within the EU, who use SEPA system. You can always contact us in future to set up another payment type.</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">Account:</td>
+		<td class="lrF lrIW">{{ f.cust_pay_account }} {{ f.cust_pay_account.errors }}</td>
+		<td class="lrH">Please provide a full account number for the system you selected in previous step. If your selection is "Other", include the platform name. Please note, Tesserakt may use your escrow/banking information for the due dilligence prior to approving the license access.</td>
+	</tr>
+	
+</table>
+
+<p class="stTit">Part III: Module Selection</p>
+
+<p class="stText">In this part, we'd like to know exactly which modules you are interested in. Even though it is possible to change the licensed configuration later on, the initial charge on your account, as well as the initial set up, both depend on what you select here.</p>
+
+<table class="lrT">
+
+	<tr>
+		<td class="lrL">TG/LCR Service:</td>
+		<td class="lrF">{{ f.chk_srv_lcr }}</td>
+		<td class="lrH">Please select this option if you're planning to use any services from the Traffic Guard - LCR suite. This includes LCR switching, A-Z matrix, traffic reconciliation, infrastructure testing, billing and 3rd party (MVTS, VoipSwitch) modules.</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">TG/LCR Type:</td>
+		<td class="lrF lrIW">{{ f.chk_srv_lcr_type }} {{ f.chk_srv_lcr_type.errors }}</td>
+		<td class="lrH">Please select the option that matches your preferred LCR installation. This selection will be used together with the server information you provide us with below in order to calculate the initial set up fee.</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">NOC:</td>
+		<td class="lrF">{{ f.chk_srv_noc }}</td>
+		<td class="lrH">Please select this option if you want the web-based and fully automated NOC module you can use to register new suppliers/customers, let them check their stats (if you're using LCR) and give them the option to raise trouble tickets.</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">TTS:</td>
+		<td class="lrF">{{ f.chk_srv_tts }}</td>
+		<td class="lrH">Mark this field if you're planning to benefit from the TTS for your dedicated server hosted in our datacentre or the TG/LCR switching solution. TTS requires Layer2 access to your switching infrastructure, so at the moment it cannot be dispatched remotely. In certain scenarios, it is possible to embed the TTS on a virtualization server. If you're interested in that solution, please <a href="http://www.tesserakt.eu/contact">Contact Us</a>.</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">IVR:</td>
+		<td class="lrF">{{ f.chk_srv_ivr }}</td>
+		<td class="lrH">The IVR module is responsible for the DTMF-based call-centre functionality and usually involves an integration with your existing solution. If you select this option, we will get in touch with you prior to charging you any set up fees, in order to plan the deployment.</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">PEX Environment:</td>
+		<td class="lrF">{{ f.chk_pex }}</td>
+		<td class="lrH">Please select this option if you're licensing Tesserakt Software for use in the PEX installation (i.e. your Business exchanging traffic with another company directly / your business being the escrow for the deal / etc.). Please make sure you understand your sole responsibility of the licensee of our software. Other companies included in your solution will not be recognized as Tesserakt customers and we will not discuss any aspects of your account with them.</td>
+	</tr>
+
+</table>
+
+<p class="stTit">Part IV: Your Infrastructure</p>
+
+<p class="stText">This section grants us access to your server infrastructure and allows us to deploy our software for your Business. Thanks to TG/LCR modular structure, it can be installed in a variety of systems, including YOURS! Please note that it is your sole responsibility to secure the access to your network once your business with Tesserakt comes to an end. Obviously, we will not share your details with anyone.</p>
+
+<table class="lrT">
+
+	<tr>
+		<td class="lrL">Switch Type:</td>
+		<td class="lrF lrIW">{{ f.switch_type }} {{ f.switch_type.errors }}</td>
+		<td class="lrH">Please let us know what kind of switching solution you're using to handle the traffic. This is also important if you're licensing the CDR tools (including the CDR Reconciliation Tool), in which case please select the switch type, from which the CDRs you want to process If your PEX deal includes different types of switches, it's not a problem! Just make sure to describe it in the "Access Information" field below.</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">Switch Version:</td>
+		<td class="lrF lrIW">{{ f.switch_version }} {{ f.switch_version.errors }}</td>
+		<td class="lrH">Please specify the version of your switching solution</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">Access Information:</td>
+		<td class="lrF lrIW">{{ f.srv_information }} {{ f.srv_information.errors }}</td>
+		<td class="lrH">This is the most important part of this whole section. Please describe in the greatest details possible how we can access your servers in order to deploy the software.<br /><br />
+		<u>Please make sure the following conditions are met:</u><br /><br />
+		<ul>
+			<li>The servers are for exclusive use of Tesserakt Software. We will change the network settings (routing, DNS), install additional services (databases, virtualization daemons), or even reinstall the OS from the scratch if needed.</li>
+			<li>There is no sensitive and/or private information stored on the servers. We are not responsible for any data losses, and all we really need is the switching software access - nothing else!</li>
+			<li>Supported OS include Windows Server 2003/2008, EL based linux distributions (RedHat, CentOS, Fedora) & Debian/GNU Linux.</li>
+			<li>For Windows servers, make sure they are activated and up to date. We will not mess with your anti-viral software until it causes us trouble, at which case we will contact you.</li>
+			<li>The credentials are unique and you do not use them for any other business or private services.</li>
+			<li>Firewall needs to be configured to let us in. Also, the switch databases need to be accessible by the TG/LCR core server. Once the deployment is completed and you don't need us to touch anything else in your network, feel free to shut the access down.</li>
+			<li>We accept all the industry-standard access methods, including RDP, VNC, ssh, TeamViewer & Radmin.</li>
+		</ul>		
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="lrL">Estimated Max. Volume:</td>
+		<td class="lrF lrIW">{{ f.srv_volume }} {{ f.srv_volume.errors }}</td>
+		<td class="lrH">It is critical for us to be able to estimate the maximum volume that is to be processed by our software. As far as pre-payments are concerned, you are free to point any amount at us, and your license remains active until you consume it. However, in order to make sure you have enough hardware resources, we need to know the maximum number of channels that you will be using. There is more information on hardware requirements for VoIP peers in the TG/LCR web interface.<br/><br/>
+		Not providing this information while requesting traffic-based services will cause your application to be rejected!</td>
+	</tr>
+
+</table>
+
+<p class="stTit">Part V: Application Verification</p>
+
+<p class="stText">Thank you for trusting us and letting us help you with your business. The registration process is almost complete. After you submit this form, it will be checked for formal errors, which will be displayed to you if found. If all the data is correct, you will be presented with the Terms & Conditions document, which we're asking you to read carefully, as it formalises the agreement between us and You.</p>
+
+<input class="lrS" type="Submit" value="Submit Application" />
+
+</form>
+
+{% endblock %}

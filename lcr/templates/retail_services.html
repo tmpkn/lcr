@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Retail Services</p>
+
+<p class="stText">Add New Service: <a href="/retail/add_service/1/">Landline</a></p>
+
+<p class="stText">Please pick the service you want to manage from the following table:</p>
+
+<table class="lcrED">
+{% for service in services %}
+	<tr>
+		<th><a href="/retail/edit_service/{{ service.id }}/">SERVICE #{{ service.id }}</a></th>
+		<td>{{ service.name }}</td>
+		<td>[{{ service.get_type_display }}] - AC: {{ service.num_active_customers }}</td>
+		<td>{{ service.get_tariff_info }}</td>
+	</tr>
+{% endfor %}
+</table>
+
+
+{% endblock %}

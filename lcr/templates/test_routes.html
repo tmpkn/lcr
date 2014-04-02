@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<table>
+	<tr>
+		<th>Prefix:</th>
+		<th>Route:</th>
+		<th>IP/Port:</th>
+	</tr>
+{% for off in o %}
+	<tr>
+	{% for offs in off %}
+		<td>{{ offs }}</td>
+	{% endfor %}
+	</tr>
+{% endfor %}
+</table>
+{% endblock %}

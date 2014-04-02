@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<form action="/add_point/" method="POST">
+	{{ f.as_ul }}
+	{{ tnfs.management_form }}
+	{% for form in tnfs.forms %}
+		{{ form.as_ul }}
+	{% endfor %}
+<input type="submit" value="GO" />
+</form>
+{% endblock %}

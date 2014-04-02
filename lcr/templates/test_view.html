@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<form action="/view_test/{{ test.id }}/" method="POST">
+
+<table>
+	<tr>
+		<td colspan="2"><b>{{ test.destination }}</b> @ <i>{{ test.supplier }}</i> ({{ test.gw_ip }})</td>
+	</tr>
+	<tr>
+		<td>Prefix:</td><td>{{ test.prefix }}</td>
+	</tr>
+
+	{% for number in numbers %}
+	<tr>
+		<td>Number:</td><td>{{ number.number }}</td>
+	</tr>
+	{% endfor %}
+
+	{{ form.as_table }}
+
+	<tr>
+		<td colspan="2"><input type="submit" value="Update Test Information" /></td>
+	</tr>
+</form>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% if user.is_authenticated %}
+Logged in: <b>{{ user.username }}</b> - {{ user.get_profile.get_carrier.carrier.name }} | <a href="/carrier/deals/">Traffic</a> | <a href="/carrier/billing/">Billing</a> | <a href="/accounts/logout/">Log Out</a>
+{% else %}
+Your are not logged in. | <a href="/accounts/login/">Log In</a>
+{% endif %}
+
+<br />
+		
+
+<a href="/">Home</a> | 
+<a href="/carrier/register/">Carrier Registration</a> | 
+<a href="/carrier/escalation/">NOC Escalation</a> | 
+<a href="#" target="_SVC">Contract Draft</a> |
+<a href="/carrier/contact/">Contact Information</a>
+

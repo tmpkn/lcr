@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<form action="/add_route/" method="POST">
+	{{ form.as_ul }}
+<input type="submit" value="GO" />
+</form>
+{% endblock %}

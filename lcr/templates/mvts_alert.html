@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block lcrContent %}
+
+<p class="stTit">MVTS-Pro1 Traffic Alerts</p>
+
+<table cellspacing="0" cellpadding="0" class="maA">
+
+<tr>
+	<th>Customer</th>
+	<th>Route</th>
+	<th>CH-P</th>
+	<th>CH-L</th>
+	<th>d(CH)</th>
+	<th>ASR-P</th>
+	<th>ASR-L</th>
+	<th>d(ASR)</th>
+	<th>ACD-P</th>
+	<th>ACD-L</th>
+	<th>d(ACD)</th>
+	<th>Status</th>
+	<th>Problem</th>
+</tr>
+
+{% for r in ret %}
+
+<tr class="maS{{ r.status }}">
+	<td>{{ r.check.customer }}</td>
+	<td>{{ r.check.destination }}</td>
+	<td class="maChange">{{ r.ch_p|floatformat:2 }}</td>
+	<td class="maChange">{{ r.ch_l|floatformat:2 }}</td>
+	<td class="maChange"><b>{{ r.change }} %</b></td>
+	<td class="maChange">{{ r.asr_p|floatformat:2 }} %</td>
+	<td class="maChange">{{ r.asr_l|floatformat:2 }} %</td>
+	<td class="maChange"><b>{{ r.asr_ch }} %</b></td>
+	<td class="maChange">{{ r.acd_p|floatformat:2 }} s</td>
+	<td class="maChange">{{ r.acd_l|floatformat:2 }} s</td>
+	<td class="maChange"><b>{{ r.acd_ch }} %</b></td>
+	<td class="maStatus">{{ r.status }}</td>
+	<td><i>{{ r.descr }}</i></td>
+</tr>
+
+{% endfor %}
+
+{% endblock %}

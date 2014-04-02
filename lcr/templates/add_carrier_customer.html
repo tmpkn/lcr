@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Add Carrier / Switch Customer</p>
+
+<p class="stText">You're adding a switch customer account for: <b>{{ carrier }}</b>.</p>
+
+<p class="stText"><b><u>!!! ACHTUNG !!!</u></b> Make sure you do know what you're doing! Changes made here are propagated to the switches in the next synchro session. Wrong configuration might interfere with existing traffic! Make sure you agreed the incoming tech prefix with the customer, it cannot be changed once it's set (this is NOT a deal prefix!). Use only alphanumericals for switch name, it should be 3-5 chars long, begin with a letter and <b><u>UNIQUE!</u></b></p>
+
+<p class="stText">Don't forget to add IP Addresses to your new customer account.</p>
+
+<form action="/add_carrier_customer/{{ carrier.id }}/" method="POST">
+<table>
+{{ cform.as_table}}
+</table>
+<input type="submit" value="- - - Yes, I've read the warning message above and I want to submit the form - - -" />
+</form>
+
+{% endblock %}

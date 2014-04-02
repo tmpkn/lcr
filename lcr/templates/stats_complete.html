@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<form action="/stats/" method="POST">
+	{{ form.as_ul }}
+<input type="submit" value="GO" />
+</form>
+
+<hr />
+<table>
+	<tr>
+		<th>Day:</th>
+		<th>Customer:</th>
+		<th>Source IP:</th>
+		<th>Destination:</th>
+		<th>Route:</th>
+		<th>Calls OK:</th>
+		<th>Calls FAIL:</th>
+		<th>Minutes:</th>
+		<th>ACD:</th>
+		<th>ASR:</th>
+	</tr>
+{% for off in o %}
+	<tr>
+	{% for offs in off %}
+		<td>{{ offs }}</td>
+	{% endfor %}
+	</tr>
+{% endfor %}
+</table>
+{% endblock %}

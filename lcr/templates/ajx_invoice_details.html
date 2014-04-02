@@ -1,0 +1,19 @@
+{
+	"sum_cost":		"{{ invoice.sum_cost|floatformat:2 }}",
+	"total":		"{{ invoice.total|floatformat:2 }}",
+	"tax":			"{{ invoice.tax }}",
+	"due_date":		"{{ invoice.due_date|date:"Y-m-d" }}",
+	"positions":
+[
+{% for position in positions %}
+	{
+		"id":		{{ position.id }},
+		"deal_id":	{{ position.deal.id }},
+		"network": 	"{{ position.deal.destination.name }}",
+		"ppm":		"{{ position.ppm|floatformat:4 }}",
+		"minutes":	"{{ position.sum_minutes|floatformat:2 }}",
+		"value":	"{{ position.sum_cost|floatformat:2 }}"
+	}
+	{% if not forloop.last %},{% endif %}
+{% endfor %}
+]}

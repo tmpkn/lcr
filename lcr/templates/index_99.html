@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stText">Welcome to Tesserakt VoIP Network management page. From here you can control your voip switches hosted in our network. These are the most common scenarios of your everyday business:</p>
+
+<p class="stTit">VoIP Deal Set Up</p>
+
+<p class="stText">A Deal is the most important object in your voip system. It connects a customer account on one of your switches with the destination provided by a supplier of your choice. When the call passes through our switches, dialed number is being changed according to the following scheme:</p>
+
+<p class="stText"><b>[CUST_INC_PREFIX]</b> + <b>[DEAL_PREFIX]</b> + [E164_PREFIX] + [NUMBER] > <b>[DEST_OUTGOING PREFIX]</b> + [E164_PREFIX] + [NUMBER]</p>
+
+<p class="stText"><u>In a nutshell</u>: customer's incoming prefix and the deal identifying prefix are being replaced with supplier's outgoing prefix. Please note - all three prefixes mentioned above are optional and all the combinations of their presence are valid. However, it is extremely important not to mix customer incoming prefixes with deal prefixes and pstn ones. So if you're planning to use prefixes for customers and/or deals, make sure to use unique different paths for them.</p>
+
+<table class="lcrSTT1">
+
+<tr>
+	<th><a href="/list_carriers/">Carriers</a></th>
+	<th><a href="/list_carriers/">Carriers</a></th>
+	<th><a href="/dest_list/">Destinations</a></th>
+	<th><a href="/add_deal/">New Deal</a></th>
+</tr>
+
+<tr>
+	<td>1. Pick one of the companies that will send the traffic registered to your Partner account and choose the "Add Customer" option. That way you set up a customer account on the selected switch. Make sure to enter proper source IPs and incoming prefix (if applicable).</td>
+	<td>2. Choose another of your Partner account companies that's going to terminate the traffic and use the "Add Supplier" option. Please note, that supplier account is not bound to any of the switches. Also, you don't save any IP addresses with the supplier account.</td>
+	<td>3. Define a destination for the traffic, choosing a supplier account that's going to terminate it. Make sure to provide a valid outgoing prefix (if applicable) and the IP address. It is also essential to enter at least one E164 prefix that is used in the PSTN for this network.</td>
+	<td>4. Finally, set up a deal linking customer account to a destination they want to buy from you. Enter valid buy and sell prices, as it is <b>impossible</b> to change them afterwards. Also, if you set the same link multiple times (for example - selling different qualities), use a deal prefix to identify them.</td>
+</tr>
+
+</table>
+
+<p class="stTit">Financial Interfaces</p>
+
+<p class="stText">After the Deal is set up, certain types of switches require funds to be allocated with the customer account in order to let the traffic through. LCR uses the prices defined in Deals when reflecting them in the switches, so both switch and LCR credit values should match.</p>
+
+<table class="lcrSTT1">
+
+<tr>
+	<th><a href="/add_point/">Funds</a></td>
+	<th><a href="/dashboard/">The Dashboard</a></th>
+	<th><a href="/view_billing/">Billing</a></th>
+	<th><a href="/bank_index/">FBME</a> / <a href="/ems_index/">EMS</a></th> 	
+</tr>
+
+<tr>
+	<td>1. You can credit both legs of a Deal: Customer and Supplier. Customer credit is the amount of money they have pointed at you, and thus the number of minutes they should be allowed to route through your switches. Supplier credit is your finances with the seller - it tells you how many minutes you should expect to go through their network before they shut you down. Supplier credit has no affect on the traffic in LCR network.</td>
+	<td>2. One of the few options that you can edit in existing Deals is EMS Project ID. Once it's set up, that Deal's finance will update itself automatically. Again, you can provide the IDs for both Customer and Supplier EMS Projects, resulting in funds being added to both Customer and Supplier credit lines in the LCR.</td>
+	<td>3. Billing section provides you with traffic and funds summaries for the past days. It does not include present day traffic and should be used to issue invoices for Customers or to verify numbers given to you by your Suppliers. It can aggregate stats for any past period in time, with the smallest time unit being 1 day. <b>Billing section shows data normalized to UTC, no matter what TZ is used in your switch.</b></td>
+	<td>4. You can always log into your bank and EMS accounts using the LCR interface. It will provide you with an online balance summary and other custom information related to these financial institutions.</td>
+</tr>
+
+</table>
+
+<p class="stTit">Managing the Traffic</p>
+
+<p class="stText">After setting up the Deals and Finances, your switches are ready to handle traffic. In order to keep the LCR data coherent, there are certain limitations related to existing Deals. Most importantly, you <b><u>cannot delete nor modify an existing Deal</u></b>. In order to change the prices you have to disable an old Deal and set up a new one. You can, however, edit certain aspects of existing traffic, like routing priorities.</p>
+
+<table class="lcrSTT1">
+
+<tr>
+	<th><a href="/live_calls/">Live Calls</a></th>
+	<th><a href="/dashboard/">The Dashboard</a></th>
+	<th><a href="/list_carriers/">Carriers</a></th>
+	<th><a href="/list_monitors/">QoS</a></th>
+</tr>
+
+<tr>
+	<td>1. Live Calls gives you reliable (billing-based) information about the traffic that's been passing through your switches in the last <u>60 minutes</u>. You can use this page to quickly verify if certain destination or Customer that you've been expecting to send calls are really operational. The purpose of Live Calls section is only to monitor present traffic with no financial data nor detailed statistics.</td>
+	<td>2. Dashboard is the heart of LCR Deals system. It gives you access to <b>ALL</b> available information related to your existing Deals, including online switches configuration, daily stats for last week, traffic charts and summaries. Due to vast amount of data the Dashboard needs to process, it may take up to 30 seconds to fully refresh the page. From Dashboard you can access Deal edit pages, where it's possible to change the priority of an existing (even live!) Deal.</td>
+	<td>3. After you make changes to routing priorites, there is one thing left to do before they are reflected in our network. If you use VoipSwitches, you have to go to Customer edit form (accessible via Carriers page) and use a VS Dialplan Purge option. This is done manually to reduce the downtime related to dialplan being rewritten and should be used after you apply a set of changes to existing Deals priorites (don't purge DP after every single change).</td>
+	<td>4. For key Deals you might consider setting up Deal Monitors. A Monitor will periodically (every 3-5 minutes) check for last stats for a particular Deal and if they do not meet your custom creteria (ACD, ASR, volume), an alert will be risen. LCR can automatically email you should a problem be detected, but it's your reponsibility to re-activate the Monitor once an alert's been set off.</td>
+</tr>
+
+</table>
+
+<p class="stTit">Extra Precautions</p>
+
+<p class="stText">Delivering reliable information about the traffic is the top priority of LCR system. It contains numberous built in safety mechanisms to ensure things run smoothly, however, it is still dependant on the switches, which are autonomous units and can be reconfigured directly. Therefore, certain maintenance should be performed on a regular basis to guarantee that the data presented by LCR is complete and valid.</p>
+
+<table class="lcrSTT1">
+
+<tr>
+	<th><a href="/ver_stats/">Stats Verification</a></th>
+	<th><a href="/switch_stats/">VS Raw Stats</a></th>
+	<th><a href="/server_monitor/">Watchdog</a></th>
+</tr>
+
+<tr>
+	<td>1. The first step in ensuring the numbers are reliable is comparing the volume of traffic accounted for LCR Deals with the total volume of traffic that was served by your Master Switch. The two numbers should be equal. If they are not, it means you either have rogue traffic or doubled Deals in your account.</td>
+	<td>2. If you're using VoipSwitch as your Master Switch, you can have a look at its raw (unprocessed) statistics for the last 2 days. It will always get you an online copy of that breakdown pulled straight from the switch's database.</td>
+	<td>3. To maximize the uptime of your switches, make sure to set up a Watchdog process. It periodically places a test call through your infrastructure, and - should a problem be detected - it tries to restart malfunctioning process or rise an alert.</td>
+</tr>
+
+</table>
+
+<p class="stTit">Switch Types</p>
+
+<p class="stText">LCR supports 3 types of voip switches. Every one of them has its pros and cons. The following table compares the most important features of these switches to give you a brief summary of what to expect when working with them.</p>
+
+<table class="lcrSTT1 lcrST1Comp">
+
+	<tr>
+		<th></th>
+		<th><a href="http://www.tesserakt.eu" target="_lcrS">LCR/FS SBC</a></th>
+		<th><a href="http://www.voipswitch.com" target="_lcrS">VoipSwitch</a></th>
+		<th><a href="http://www.tesserakt.eu" target="_lcrS">LCR PBX</a></th>
+	</tr>
+
+	<tr>
+		<th>Server OS:</th>
+		<td>Unix</td>
+		<td>Windows</td>
+		<td>Unix</td>
+	</tr>
+	
+	<tr>
+		<th>Architecture:</th>
+		<td>Open</td>
+		<td>Proprietary</td>
+		<td>Open</td>
+	</tr>
+
+	<tr>
+		<th>Transcoding:</th>
+		<td>No</td>
+		<td>No</td>
+		<td>Yes <sup>*</sup></td>
+	</tr>
+
+	<tr>
+		<th>Online LCR <sup>**</sup>:</th>
+		<td>Yes</td>
+		<td>No</td>
+		<td>Yes</td>
+	</tr>
+
+	<tr>
+		<th>Custom Routing Protocols:</th>
+		<td>Yes</td>
+		<td>No</td>
+		<td>Yes <sup>***</sup></td>
+	</tr>
+
+	<tr>
+		<th>Failover Routes:</th>
+		<td>Yes</td>
+		<td>Yes</td>
+		<td>No</td>
+	</tr>
+
+	<tr>
+		<th>Live Billing <sup>****</sup>:</th>
+		<td>No</td>
+		<td>Yes <sup>*****</sup></td>
+		<td>No</td>
+	</tr>
+
+	<tr>
+		<th>LCR CDR Storage:</th>
+		<td>Yes</td>
+		<td>No</td>
+		<td>Yes</td>
+	</tr>
+
+	<tr>
+		<th>Est. Cap on Class I Switch:</th>
+		<td>70xE1</td>
+		<td>45xE1</td>
+		<td>12xE1</td>
+	</tr>
+
+	<tr>
+		<th>Est. Cap on Class II Switch:</th>
+		<td>40xE1</td>
+		<td>25xE1</td>
+		<td>6xE1</td>
+	</tr>
+
+	<tr>
+		<th>Est. Cap on Class III Switch:</th>
+		<td>10xE1</td>
+		<td>5xE1</td>
+		<td>E1</td>
+	</tr>
+
+	<tr>
+		<th>Recommended for:</th>
+		<td>Wholesale</td>
+		<td>Testing, Standalone switching</td>
+		<td>Transcoding, IVR</td>
+	</tr>
+	
+</table>
+
+<p class="stText"><b>*</b> - Transcoding of patented codecs (G729) is a subject to local patent laws and/or owned licenses and depends on physical location of your switch.</p>
+
+<p class="stText"><b>**</b> - Switches that support Online LCR reflect the changes made to Carrier and Deals database immediately and do not require any extra steps like dialplan purging.</p>
+
+<p class="stText"><b>***</b> - Excluding failover routes.</p>
+
+<p class="stText"><b>****</b> - Switch capability to cut the traffic when credit line runs out independantly from LCR.</p>
+
+<p class="stText"><b>*****</b> - VS only supports per-customer Credit, which means every customer account has a credit line being a sum of all its Deals customer credit lines.</p>
+
+{% endblock %}

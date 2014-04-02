@@ -1,0 +1,15 @@
+{
+	"id":	{{ deal.id }},
+	"name":	"{{ deal }}",
+	"buy_carrier_name": "{{ deal.buy_carrier.carrier.name }}",
+	"buy_carrier_id": {{ deal.buy_carrier.carrier.id }},
+	"buy_price": "{{ deal.buy_price }}",
+	"sell_carrier_name": "{{ deal.destination.supplier.carrier.name }}",
+	"sell_carrier_id": {{ deal.destination.supplier.carrier.id }},
+	"sell_price": "{{ deal.sell_price }}",
+	"switch_ip": "{{ deal.buy_carrier.switch.ip_addr }}",
+	"switch_type": {{ deal.buy_carrier.switch.type }},
+	"switch_type_str": "{{ deal.buy_carrier.switch.get_type_display }}",
+	"tot_minutes": {{ deal.tot_minutes }},
+	"last_traffic": "{{ deal.stat_last_traffic }}"
+}

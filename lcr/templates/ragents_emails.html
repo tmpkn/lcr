@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">ZOIPER AGENTS ({{ ne_z }})</p>
+
+<p class="stText">
+{% for e in e_z %}
+{{ e }}<br />
+{% endfor %}
+</p>
+
+<p class="stTit">NON-ZOIPER AGENTS ({{ ne_nz }})</p>
+
+<p class="stText">
+{% for e in e_nz %}
+{{ e }}<br />
+{% endfor %}
+</p>
+
+<p class="stTit">ALL AGENTS ({{ ne_a }})</p>
+
+<p class="stText">
+{% for e in e_a %}
+{{ e }}<br />
+{% endfor %}
+</p>
+
+
+{% endblock %}

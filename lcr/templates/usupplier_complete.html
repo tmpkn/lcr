@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<table>
+	<tr>
+		<th>Company Name:</th>
+		<td>{{ supp.name }}</td>
+	</tr>
+	<tr>
+		<th>Contact Info:</th>
+		<td>Phone:<br />{{ supp.phone }}<br /><br />Address:<br />{{ supp.address }}</td>
+	</tr>
+	<tr>
+		<th>Billing Info:</th>
+		<td>Name:<br />{{ supp.bill_name }}<br /><br />Phone:<br />{{ supp.bill_phone }}<br /><br />MSN:<br />{{ supp.bill_msn }}<br /><br />Email:<br />{{ supp.bill_email }}</td>
+	</tr>
+	<tr>
+		<th>NOC Info:</th>
+		<td>Name:<br />{{ supp.noc_name }}<br /><br />Phone:<br />{{ supp.noc_phone }}<br /><br />MSN:<br />{{ supp.noc_msn }}<br /><br />Email:<br />{{ supp.noc_email }}</td>
+	</tr>
+	<tr>
+		<th>VoIP Details:</th>
+		<td>Switch:<br />{{ supp.prov_gw_brand }} / {{ supp.prov_gw_model }} / {{ supp.prov_gw_soft }}<br /><br />IP:<br />{{ supp.prov_ip_signal }} ({{ supp.prov_ip_media }})</td> 
+	</tr>
+</table>
+{% endblock %}

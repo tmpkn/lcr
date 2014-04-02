@@ -1,0 +1,40 @@
+#mainCont
+{
+	width: 900px;
+	margin: 10px auto;
+}
+
+a
+{
+	text-decoration: none;
+	color: #b37b15;
+}
+
+a:hover
+{
+	text-decoration: underline;
+}
+
+hr
+{
+	padding: 1px 10px;
+	margin: 5px 10px;
+	border: 0px none;
+	border-top: 1px solid #8f8f8f;
+}
+
+table.lcrDeal th
+{
+	background-color: #b37b15;
+}
+
+table.lcrDeal
+{
+	margin: 10px auto;
+}
+
+td.mcFTSTATIC
+{
+	border-left: 2px solid #b37b15;
+	color: #b37b15;
+}

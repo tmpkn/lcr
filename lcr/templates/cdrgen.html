@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Add CDRGen Job</p>
+<table>
+<form action="/free/cdrgen/" method="POST">
+	{{ cf.as_table }}
+</table>
+<input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

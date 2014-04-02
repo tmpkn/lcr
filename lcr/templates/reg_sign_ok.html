@@ -1,0 +1,17 @@
+{% extends "base-register.html" %}
+
+{% load humanize %}
+
+{% block lcrContent %}
+
+<p class="stTit">Registration Complete!</p>
+
+<p class="stText">Thank you for signing the Agreement. Your Registration process is now complete and will be reviewed by Tesserakt as soon as possible. You can check the status of your application at any time using the following url:</p>
+
+<p class="stText" style="width: 100%; text-align: center;"><a href="http://lcr.tesserakt.eu/register/{{ reg.token }}/">http://lcr.tesserakt.eu/register/{{ reg.token }}/</a></p>
+
+<p class="stText">Please keep the url safe, as you will need it to access your Software credentials once the approval is complete.</p>
+
+<p class="stTit">Thank you for choosing Tesserakt!</p>
+
+{% endblock %}

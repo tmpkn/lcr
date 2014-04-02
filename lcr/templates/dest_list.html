@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<p class="stTit">Current Destinations defined for Carriers/Suppliers:</p>
+<p class="stText"><a href="/dest_add/">Define a New Destination</a></p>
+{% for sup in asupps %}
+<p class="stTit">{{ sup }}</p>
+<table>
+
+	{% for dest in sup.dests %}
+	<tr>
+		<td>{{ dest }}</td>
+		<td>{{ dest.get_num_deals }} Deals</td>
+		<td><a href="#">Add Deal</a></td>
+		<td><a href="/dest_details/{{ dest.id }}/">Details</a></td>
+		<td><a href="#">[X]</a></td>
+	</tr>
+	{% endfor %}
+
+</table>
+{% endfor %}
+
+{% endblock %}

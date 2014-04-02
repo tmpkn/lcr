@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<script type="text/javascript">
+	
+iid = {{ invoice.id }};
+	
+function loadDetails() {
+	$('#icDetails tbody').html('');
+	$('#icDeals tbody').html('');
+	$.getJSON('/ajx_invoice/' + iid + '/details/', function(data) {
+		$.each(data.positions, function(index, value) {
+			$('#icDetails tbody').append('<tr><td class="tjCenter"><a class="icRemPos" pid="' + value.id + '" href="javascript:void(0);">[-]</a></td><td class="tjCenter">' + value.deal_id + '</td><td>' + value.network + '</td><td class="tjRight">$ <input class="icPPM" pid="' + value.id + '" type="text" value="' + value.ppm + '" /></td><td class="tjCenter"><a href="javascript:void(0);">[D]</a></td><td class="tjRight">' + value.minutes + '</td><td class="tjRight">$ ' + value.value + '</td></tr>');
+		});
+		$('#icSubTotal').html('$ ' + data.sum_cost);
+		$('#icTaxI').val(data.tax);
+		$('#icTotal').html('$ ' + data.total);
+	});
+	$.getJSON('/ajx_invoice/' + iid + '/available_deals/', function(data) {
+		$.each(data.deals, function(index, value) {
+			$('#icDeals tbody').append('<tr><td class="tjCenter"><a class="icAddDeal" did="' + value.id + '" href="javascript:void(0);">[+]</a></td><td class="tjCenter">' + value.id + '</td><td>' + value.network + '</td><td class="tjRight">$ ' + value.ppm + '</td><td class="tjRight">' + value.minutes + '</td><td class="tjRight">$ ' + value.value + '</td></tr>');
+		});
+	});
+}
+
+function rem_pos(pid) {
+	$.get('/ajx_invoice/rem_pos/' + pid + '/', function() {
+		loadDetails();
+	});
+}
+
+function add_deal(did) {
+	$.get('/ajx_invoice/' + iid + '/add_deal/' + did + '/', function() {
+		loadDetails();
+	});
+}
+	
+$(document).ready(function() {
+	loadDetails();
+	$(document).on("click", ".icRemPos", function() {
+		rem_pos($(this).attr('pid'));
+	});
+	$(document).on("click", ".icAddDeal", function() {
+		add_deal($(this).attr('did'));
+	});
+	$(document).on("change", ".icPPM", function() {
+		$.get('/ajx_invoice/edit_pos/' + $(this).attr('pid') + '/' + ($(this).val() * 10000) + '/', function () {
+			loadDetails();
+		});
+	});
+	$(document).on("change", "#icTaxI", function() {
+		$.get('/ajx_invoice/edit_tax/' + iid + '/' + ($(this).val() * 1) + '/', function () {
+			loadDetails();
+		});
+	});
+});
+	
+</script>
+
+<p class="stTit">Edit Invoice #{{ invoice.id }} - Status: {{ invoice.get_status_display }}</p>
+
+<p class="stText"><a href="/invoice/delete/{{ invoice.id }}/">[ DELETE INVOICE ]</a></p>
+
+<div class="iCell" id="ihPartner">
+<pre>
+{{ partner.details }}
+</pre>
+</div>
+
+<div class="iCell" style="height: 120px;">
+
+<div class="icBlock" style="float: left;" id="icbCarrier">
+<pre>
+<u>Customer:</u><br />
+<b>{{ invoice.carrier.name }}</b><br />{{ invoice.carrier.address }}
+</pre>
+</div>
+
+<div class="icBlock" style="float: right; width: 310px;" id="icbDatenNum">
+<p class="icbDate tjRight" style="margin-bottom: 20px;">Date: {{ invoice.dt_when|date:"Y-m-d" }}</p>
+<p class="icbNum" style="margin-bottom: 10px; font-size: 20px;">Invoice No.<br />{{ invoice.number }}</p>
+<p class="icbDate"><u>Period: {{ invoice.dt_from|date:"Y-m-d" }} - {{ invoice.dt_to|date:"Y-m-d" }}</u></p>
+</div>
+
+</div>
+
+<div class="iCell">
+
+<table class="icTable" id="icDetails" cellspacing="0" cellpadding="0">
+
+<thead>
+<tr>
+	<th style="width: 25px;">&nbsp;</th>
+	<th style="width: 50px;">Deal:</th>
+	<th style="width: 240px;">Destination:</th>
+	<th style="width: 100px;">PPM:</th>
+	<th style="width: 25px;">&nbsp;</th>
+	<th style="width: 100px;">Minutes</th>
+	<th style="width: 140px;">Value</th>
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+
+<tfoot>
+<tr>
+	<td rowspan="2" colspan="5">&nbsp;</td>
+	<td>Sub Total:</td>
+	<td id="icSubTotal" class="tjRight"></td>
+</tr>
+<tr>
+	<td>Tax %:</td>
+	<td id="icTax" class="tjRight"><input class="icPPM tjRight" id="icTaxI" /></td>
+</tr>
+<tr>
+	<td>&nbsp;</td>
+	<td colspan="4">Due Date: {{ invoice.due_date|date:"Y-m-d" }}</td>
+	<td class="icTot">TOTAL:</td>
+	<td id="icTotal" class="icTot tjRight"></td>
+</tr>
+</tfoot>
+
+</table>
+
+<p class="tjRight" style="margin-top: 25px;"><a href="/bill/month/">&lt;&lt; BILLING</a> | <a href="/invoice/pdf/{{ invoice.id }}/" target="lcrID">DOWNLOAD PDF &gt;&gt;</a></p>
+
+</div>
+
+<div class="iCell">
+
+<table class="icTable" id="icDeals" cellspacing="0" cellpadding="0">
+
+<thead>
+<tr>
+	<th style="width: 25px;">&nbsp;</th>
+	<th style="width: 50px;">Deal:</th>
+	<th style="width: 240px;">Destination:</th>
+	<th style="width: 125px;">PPM:</th>
+	<th style="width: 100px;">Minutes</th>
+	<th style="width: 140px;">Value</th>
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

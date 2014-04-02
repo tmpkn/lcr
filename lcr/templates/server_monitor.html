@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Server Monitor - Last 10 Logs</p>
+
+<table>
+
+<tr>
+	<th>VoipSwitch IP:</th>
+	<th>Date/Time:</th>
+	<th>Test Call Code:</th>
+	<th>Test Session Log:</th>
+</tr>
+
+{% for ssm in ssms %}
+
+<tr>
+	<td>{{ ssm.host }}</td>
+	<td>{{ ssm.dt_when }}</td>
+	<td>{{ ssm.call_code }}</td>
+	<td><pre>{{ ssm.log }}</pre></td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

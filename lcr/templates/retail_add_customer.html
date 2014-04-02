@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Add New Retail Customer:</p>
+
+<p class="stText">Use the following form to define a new Retail Customer.</p>
+
+<table class="lcrED">
+<form action="/retail/add_customer/" method="POST">	
+{{ cform.as_table }}
+<tr>
+	<td colspan="2"><input type="submit" value="Add New Retail Customer" /></td>
+</tr>
+</form>
+</table>
+
+
+
+
+{% endblock %}

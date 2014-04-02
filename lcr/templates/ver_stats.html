@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block lcrContent %}
+
+<p class="stTit">Verify Statistics</p>
+<table>
+	<tr>
+		<th>Date:</th>
+		<th>Minutes / Switch:</th>
+		<th>Minutes / Deals:</th>
+		<th>Match:</th>
+	</tr>
+{% for v in vs %}
+	<tr>
+		<td>{{ v.date }}</td>
+		<td>{{ v.m_switch|intcomma }}</td>
+		<td>{{ v.m_deals|intcomma }}</td>
+		<td>{{ v.match }} %</td>
+	</tr>
+{% endfor %} 
+</table>
+
+
+{% endblock %}

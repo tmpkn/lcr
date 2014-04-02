@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Edit Retail Customer #{{ customer.id }} ({{ customer.name }})</p>
+
+<p class="stText">Use the following table to make changes to your existing Retail Customer. Please be extremely cautious when editing active Customer, as changes saved here are processed immediately by the system.</p>
+
+<p class="stText">Phone pincode: <span class="rcpin">{{ customer.pincode }}</p>
+
+<form action="/retail/edit_customer/{{ service.id }}/" method="POST">
+
+<table class="lcrED">
+{{ cform.as_table }}
+<tr>
+	<td colspan="2"><input type="submit" value="Save Changes to Customer" /></td>
+</tr>
+</table>
+
+</form>
+
+<p class="stTit">Active Services:</p>
+
+<table class="lcrECR">
+	<tr>
+		<th>Assign. ID</th>
+		<th>&nbsp;</th>
+		<th>Service Name</th>
+		<th>&nbsp;</th>
+		<th>Service Type</th>
+		<th>Service Fee</th>
+		<th>Activ. Date</th>
+	</tr>
+{% for cservice in customer.get_active_cservices %}
+	<tr>
+		<th rowspan="2">SPA-CS-{{ cservice.id }}</th>
+		<td colspan="3"><a href="/retail/edit_service/{{ cservice.service.id }}/">{{ cservice.service.name }}</a></td>
+		<td>{{ cservice.service.get_type_display }}</td>
+		<td>{{ cservice.service.price }}</td>
+		<td>{{ cservice.d_when }}</td>
+	</tr>
+	<tr>
+		<td colspan="4">
+{% for number in cservice.get_numbers %}
+	{{ number.number }}&nbsp;<a href="/retail/del_cservice_number/{{ number.id }}/">[D]</a>&nbsp;&nbsp;&nbsp; 
+{% endfor %}
+		<td colspan="2"><form id="csan{{ cservice.id }}" method="POST" action="/retail/add_cservice_number/{{ cservice.id }}/">
+			<input type="text" name="csnum" /><a href="javascript:document.forms['csan{{ cservice.id }}'].submit();">ADD</a>
+		</form></td>
+	</tr>
+{% endfor %}
+</table>
+
+<p class="stTit">Activate New Services:</p>
+
+<form action="/retail/add_cservice/{{ customer.id }}/" method="POST">
+<table class="lcrED">
+	{{ sform.as_table }}
+	<tr>
+		<td colspan="2"><input type="submit" value="Activate Selected Service" /></td>
+	</tr>
+</table>
+</form>
+
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Deal Details: {{ deal.destination }}</p>
+
+<p class="stText">In this report you can find traffic information about the selected deal. For your convinience, we also display a daily breakout for the last 7 days of traffic. If you're interested in financial information, like invoices and CDRs, please visit the <a href="/carrier/billing/">Billing</a> section.</p>
+
+<table class="lcrDeal">
+	<tr>
+		<th>Total Statistics:</th>
+		<td colspan="2">{{ deal.s_total.calls_ok }} calls / {{ deal.s_total.minutes }} minutes / ACD: {{ deal.s_total.acd }} seconds / ASR: {{ deal.s_total.asr|floatformat:"-2" }} %</td>
+	</tr>
+	<tr>
+		<th rowspan="4">Last 15 minutes:<br />
+		<span class="lcrDT">@ {{ deal.l15min.dt_when|date:"Y-m-d H:i:s" }}</th></th>
+		<td>Calls:</td>
+		<td>{{ deal.l15min.calls_ok }}</td>
+	</tr>
+	<tr>
+		<td>Minutes:</td>
+		<td>{{ deal.l15min.minutes }}</td>
+	</tr>
+	<tr>
+		<td>ACD:</td>
+		<td>{{ deal.l15min.acd }} seconds</td>
+	</tr>
+	<tr>
+		<td>ASR:</td>
+		<td>{{ deal.l15min.asr|floatformat:"-2" }} %</td>
+	</tr>
+	<tr>
+		<th rowspan="4">Last 60 minutes:<br />
+		<span class="lcrDT">@ {{ deal.l60min.dt_when|date:"Y-m-d H:i:s" }}</th></th>
+		<td>Calls:</td>
+		<td>{{ deal.l60min.calls_ok }}</td>
+	</tr>
+	<tr>
+		<td>Minutes:</td>
+		<td>{{ deal.l60min.minutes }}</td>
+	</tr>
+	<tr>
+		<td>ACD:</td>
+		<td>{{ deal.l60min.acd }} seconds</td>
+	</tr>
+	<tr>
+		<td>ASR:</td>
+		<td>{{ deal.l60min.asr|floatformat:"-2" }} %</td>
+	</tr>
+	<tr>
+		<th rowspan="4">Last 12 hours:<br />
+		<span class="lcrDT">@ {{ deal.l12h.dt_when|date:"Y-m-d H:i:s" }}</th></th>
+		<td>Calls:</td>
+		<td>{{ deal.l12h.calls_ok }}</td>
+	</tr>
+	<tr>
+		<td>Minutes:</td>
+		<td>{{ deal.l12h.minutes }}</td>
+	</tr>
+	<tr>
+		<td>ACD:</td>
+		<td>{{ deal.l12h.acd }} seconds</td>
+	</tr>
+	<tr>
+		<td>ASR:</td>
+		<td>{{ deal.l12h.asr|floatformat:"-2" }} %</td>
+	</tr>
+	<tr>
+		<th rowspan="4">Last 24 hours:<br />
+		<span class="lcrDT">@ {{ deal.l24h.dt_when|date:"Y-m-d H:i:s" }}</th></th>
+		<td>Calls:</td>
+		<td>{{ deal.l24h.calls_ok }}</td>
+	</tr>
+	<tr>
+		<td>Minutes:</td>
+		<td>{{ deal.l24h.minutes }}</td>
+	</tr>
+	<tr>
+		<td>ACD:</td>
+		<td>{{ deal.l24h.acd }} seconds</td>
+	</tr>
+	<tr>
+		<td>ASR:</td>
+		<td>{{ deal.l24h.asr|floatformat:"-2" }} %</td>
+	</tr>
+
+</table>
+<table class="lcrDeal">
+	<tr>
+		<th colspan="5">Daily Breakdown (Last 7 Days of Traffic)</th>
+	</tr>
+	<tr>
+		<th>Date:</th>
+		<th>Calls:</th>
+		<th class="colMIN">Minutes:</th>
+		<th class="colACD">ACD:</th>
+		<th class="colASR">ASR:</th>
+	</tr>
+	{% for day in deal.s_daily %}
+	<tr>
+		<td>{{ day.date }}</td>
+		<td>{{ day.calls_ok }}</td>
+		<td class="colMIN">{{ day.minutes }}</td>
+		<td class="colACD">{{ day.acd }}</td>
+		<td class="colASR">{{ day.asr|floatformat:"-2" }} %</td>
+	</tr>
+	{% endfor %}
+	<tr>
+		<td colspan="5"><img src="/chart/{{ deal.id }}/min.gif" alt="Minutes Chart" /><br /><img src="/chart/{{ deal.id }}/acd.gif" alt="ACD Chart" /><br /><img src="/chart/{{ deal.id }}/asr.gif" alt="ASR Chart" /></td>
+	</tr>
+</table>
+
+<p class="stText stCenter">[ <a href="/carrier/deals/">&lt;&lt; List of Deals</a> ]</p>
+
+{% endblock %}

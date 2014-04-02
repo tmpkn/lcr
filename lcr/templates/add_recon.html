@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Submit New Reconciliation</p>
+
+<p class="stText">LCR Reconciliation modules lets you easily compare the data saved in external CDR file against the records stored in the switches databases. After your query is processed, you will be able to view the results using the "View Results" links below. Due to its heavy load nature, Reconciliation processes are not instant and require administrative attention.</p>
+
+<p class="stText">The most important thing when submitting a Reconciliation is making sure you provide a CDR file that matches the required format. LCR expects an Excel-style CSV spreadsheet (with semi-colons) with the following rows:</p>
+
+<p class="stText"><b>call_date_time;dialed_number;duration\n</b></p>
+
+<ul>
+	<li><b>call_date_time</b> - Date/Time of the call, in one of the two formats: [YYYY-mm-dd HH:MM:SS] / [mm/dd/YYYY HH:MM]</li>
+	<li><b>dialed_number</b> - Number dialed, with <b><u>ALL</u></b> prefixes stripped off, just the E164 digits (no + sign)</li>
+	<li><b>duration</b> - Duration in seconds</li>
+	<li><b>\n</b> - New line</li>
+</ul>
+
+<p class="stText">Make <b><u>sure</u></b> that there are no white chars (spaces, TABs, etc.) in your CSV file. Its size shouldn't exceed <b>1 Megabyte</b>. If you have a big volume of traffic to analyze, please split it into smaller chunks and submit as separate Reconciliations.</p>
+
+<p class="stText">Make <b><u>sure</u></b> your CDR file is:</p>
+
+<ul>
+	<li><b>continuous</b> - If you have a couple of SEPARATE days to analyze, you have to submit them separately, or else the results will be illogical. You can submit a CDR file with multiple days of traffic, as long as they are in a proper order day after day.</li>
+	<li><b>compact</b> - If there was a long break in traffic (bigger than a day), it's better to split the traffic waves into separate CDRs. That will significantly improve the analyze performance.</li>
+	<li><b>unique</b> - CSV file that you're submitting can <b><u>ONLY</u></b> contain information about the deal/destination traffic that you're comparing against. Any other calls will affect the results.</li>
+</ul>
+
+<form action="/add_recon/" method="POST" enctype="multipart/form-data">
+<table class="lcrED">
+	<tr>
+		<th>Party Type:</th>
+		<td>{{ f.party_type }}</td>
+		<td colspan="2">Choose whether you're comparing against a Deal or a Destination.</td>
+	</tr>
+	<tr>
+		<th>Party ID:</th>
+		<td>{{ f.party_id }}</td>
+		<td>List of the <a href="/dest_list/">[Destinations]</a></td>
+		<td>List of the <a href="/dashboard/">[Deals]</a></td>
+	</tr>
+	<tr>
+		<th>CDR CSV File:</th>
+		<td colspan="2">{{ f.cdr }}</td>
+		<td>CSV File meeting the criteria described above.</td>
+	</tr>
+	<tr>
+		<th>Tolerance:</th>
+		<td>{{ f.tolerance }}</td>
+		<td colspan="2">Duration tolerance for Matched calls.</td>
+	</tr>
+	<tr>
+		<td colspan="4"><input style="width: 600px;" type="submit" value="I have read and understood the instructions and want to submit my Reconciliation" /></td>
+	</tr>
+</table>
+
+</form>
+
+<p class="stTit">Your Submitted Reconciliations</p>
+
+<table class="lcrECR">
+	<tr>
+		<th>Recon. ID</th>
+		<th>Submitted</th>
+		<th>&nbsp;</th>
+		<th>&nbsp;</th>
+		<th>Party</th>
+		<th>&nbsp;</th>
+		<th>&nbsp;</th>
+		<th>Status</th>
+		<th>&nbsp;</th>
+	</tr>
+{% for recon in recons %}
+	<tr>
+		<th>#{{ recon.id }}</th>
+		<td>{{ recon.dt_when|date:"Y-m-d" }}</td>
+		<td colspan="5">{{ recon.str_party }}</td>
+		<td>{{ recon.get_status.get_status_display }}</td>
+		<td><a href="/res_recon/{{ recon.id }}/">Results</a></td>
+	</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

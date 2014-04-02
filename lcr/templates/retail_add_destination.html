@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<form action="/retail/add_destination/" method="POST">
+
+<p class="stTit">Add New Retail Destination</p>
+
+<p class="stText">Please fill in the following form to define a new retail destination. After it is saved in the system, you will be able to perform additional actions, like adding E164 prefixes.</p>
+
+<table class="lcrED">
+{{ dform.as_table }}
+<tr>
+	<td colspan="2"><input type="submit" value="Add New Destination" /></td>
+</tr>
+</table>
+
+</form>
+
+
+{% endblock %}

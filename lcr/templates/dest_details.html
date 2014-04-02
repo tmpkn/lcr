@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block lcrContent %}
+<p class="stTit">Destination: {{ d }}</p>
+<p class="stText">Use the following form to manage the destination. It is possible to paste multiple E164 prefixes - each one in new line. Please be aware that some changes made here are automatically and immediatelly applied to the switch during next synchronization session. Proceed with extreme caution!</p>
+<!--
+<form action="/dest_details/{{ d.id }}/" method="post">
+-->
+<form action="/dest_add_e164/{{ d.id }}/" method="post">
+<table class="lcrED">
+	<tr>
+		<th>Destination ID:</th>
+		<td>{{ d.id }}</td>
+		<td rowspan="6"><textarea class="lcrEDE164" name="f_prefixes" id="f_prefixes"></textarea></td>
+	</tr>
+	<tr>
+		<th>Destination Name:</th>
+		<td>{{ d.name }}</td>
+	</tr>
+	<tr>
+		<th>Switch Name:</th>
+		<td>{{ d.s_name }}</td>
+	</tr> 
+	<tr>
+		<th>Supplier:</th>
+		<td><a href="/edit_carrier/{{ d.supplier.carrier.id }}/">{{ d.supplier.carrier.name }}</a></td>
+	</tr>
+	<tr>
+		<th>Gateway IP:</th>
+		<td>{{ d.ip_addr }}</td>
+	</tr>
+	<tr>	
+		<th>Tech Prefix:</th>
+		<td>{{ d.get_str_tech_prefix }}</td>
+	</tr>
+	<tr>
+		<td colspan="3"><input type="submit" value="Add E164 Prefixes" /></td>
+	</tr>
+	<tr>
+		<th>E164 Prefixes:</th>
+		<td colspan="2" class="lcrEDList">
+		{% for e164 in e164s %}
+		{{ e164.code }}&nbsp;<a href="/dest_del_e164/{{ e164.id }}/">[X]</a>&nbsp;&nbsp;&nbsp;
+		{% endfor %}
+		</td>
+</table>
+</form>
+<!--
+<input type="submit" value="Update Destination" />
+</form>
+-->
+
+<p class="stTit">Deals selling this Destination:</p>
+
+<table class="lcrECR">
+	<tr>
+		<th>Deal ID</th>
+		<th>Cust. Codename</th>
+		<th>Cust. Switch IP</th>
+		<th>Cust. Price</th>
+		<th>Customer</th>
+		<th>Balance</th>
+		<th>&nbsp;</th>
+	</tr>
+	{% for deal in d.get_deals %}
+	<tr>
+		<th>#{{ deal.id }}</th>
+		<td><a href="/edit_customer/{{ deal.buy_carrier.id }}/">[{{ deal.buy_carrier.s_name }}]</a></td>
+		<td>{{ deal.buy_carrier.switch.ip_addr }}</td>
+		<td>${{ deal.sell_price }} / min</td>
+		<td><a href="/edit_carrier/{{ deal.buy_carrier.carrier.id }}/">{{ deal.buy_carrier.carrier.name }}</a></td>
+		<td>${{ deal.total_balance_seller|floatformat:"2"|intcomma }}</td>
+		<td><a href="/edit_deal/{{ deal.id }}/">Edit</a></td>
+	</tr>
+	{% endfor %}
+</table>
+
+<pre>
+{% for e164 in e164s %}{{ e164.code }}<br/>{% endfor %}
+</pre>
+
+{% endblock %}

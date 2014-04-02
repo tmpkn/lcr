@@ -1,0 +1,12 @@
+{% extends "base-login.html" %}
+
+{% block lcrContent %}
+<form action="/accounts/login/" method="post">
+	{% csrf_token %}
+        <table>
+                {{ form }}
+        </table>
+        <input type="hidden" name="next" value="/" />
+        <input type="submit" value="Login" />
+</form>
+{% endblock %}

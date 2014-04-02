@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<script type="text/javascript" src="/media/js/swfobject.js"></script>
+<script type="text/javascript">
+{% if user.get_profile.get_partner.partner.id == 1 or user.get_profile.is_god %}
+
+{% endif %}
+
+s_days = 0;
+s_wdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+s_deals = [];
+
+function get_month() {
+	s_days = 0;
+	s_year = $('#bmYear').val();
+	s_month = $('#bmMonth').val();
+	r_month = s_month - 1;
+	cur_date = new Date(s_year, r_month, 1);
+	$('#bmTable tbody').html('');
+	$('#bmInvoices tbody').html('');
+	$('#bmTable thead').html('<tr id="bmhDays"></tr><tr id="bmhWDays"></tr>');
+	$('#bmhDays').append('<td class="calLH" rowspan="2">Deal:</td>');
+	while (cur_date.getMonth() == r_month) {
+		$('#bmhDays').append('<td class="calCell">' + cur_date.getDate() + '</td>');
+		$('#bmhWDays').append('<td class="calCell">' + s_wdays[cur_date.getDay()] + '</td>');
+		s_days++;
+		cur_date.setDate(cur_date.getDate() + 1);
+	}
+	$.getJSON('/ajx_invoices/' + s_year + '/' + s_month +'/', function(data) {
+		// 1. Deals
+		for (deal_key in data.deals) {
+			deal = data.deals[deal_key];
+			var drowname = 'bmbRowDeal' + deal.id;
+			$('#bmTable tbody').append('<tr id="' + drowname + '"></tr>');
+			$('#' + drowname).append('<td class="calLH">' + deal.id + '</td>');
+			for (var i = 1; i <= s_days; i++) {
+				$('#' + drowname).append('<td class="calCell" id="bmbCellDay' + i + 'Deal' + deal.id + '">&nbsp;</td>');	
+			}
+		}
+		// 2. Invoices
+		for (inv_key in data.invoices) {
+			inv = data.invoices[inv_key];
+			var irowname = 'bmbRowInv' + inv.id;
+			$('#bmInvoices tbody').append('<tr class="bmbRI bmHA bmHD' + inv.id + '" id="' + irowname + '" iid="' + inv.id + '"><td class="calLH">' + inv.id + '</td><td class="cBig">' + inv.dt_when + '</td><td class="cBig">' + inv.carrier + '</td><td class="cSmall">$ ' + inv.total + '</td><td class="cSmall">' + inv.status + '</td></tr>');
+		}
+		// 3. Periods
+		month_begin = new Date(s_year, r_month, 1);
+		for (pos_key in data.positions) {
+			pos = data.positions[pos_key];
+			dt_from = new Date(Date.parse(pos.dt_from, 'yyyy-MM-dd'));
+			dt_to = new Date(Date.parse(pos.dt_to, 'yyyy-MM-dd'));
+			if (dt_from < month_begin) {
+				dt_start = new Date(s_year, r_month, 1);
+			} else {
+				dt_start = dt_from;
+			}
+			while ((dt_start <= dt_to) && (dt_start.getMonth() == r_month)) {
+				$('#bmbCellDay' + dt_start.getDate() + 'Deal' + pos.deal_id).addClass('bmbIssued bmbInvoice' + pos.invoice_id + ' bmHA bmHD' + pos.invoice_id).attr('iid', pos.invoice_id);
+				dt_start.setDate(dt_start.getDate() + 1);
+			}
+		}
+	});
+}
+
+$(document).ready(function() {
+	get_month();
+	$('#bmChange').on("click", function() {
+		get_month();
+	});
+	$('#bmInvoice').on("click", function() {
+		window.location = '/invoice/add/' + $('#bmCarrier').val() + '/';
+	});
+	$(document).on("click", ".bmbRI", function() {
+		window.location = '/invoice/edit/' + $(this).attr('iid');
+	});
+	$(document).on("mouseenter", ".bmHA", function() {
+		iid = $(this).attr('iid');
+		$('.bmHD' + iid).addClass('bmHI');
+	});	
+	$(document).on("mouseleave", ".bmHA", function() {
+		$('.bmHI').removeClass('bmHI');
+	});
+});
+
+</script>
+
+<p class="stTit">Billing - Month View</p>
+
+<div class="bmCell">
+<select id="bmYear">
+	<option value="2011">2011</option>
+	<option value="2012">2012</option>
+</select>
+<select id="bmMonth">
+	<option value="1">January</option>
+	<option value="2">February</option>
+	<option value="3">March</option>
+	<option value="4">April</option>
+	<option value="5">May</option>
+	<option value="6">June</option>
+	<option value="7">July</option></option>
+	<option value="8">August</option>
+	<option value="9">September</option>
+	<option value="10">October</option>
+	<option value="11">November</option>
+	<option value="12">December</option>
+</select>
+<input type="button" id="bmChange" value="Change Month" />
+</div>
+<div class="bmCell">
+<table id="bmTable" cellspacing="0" cellpadding="0">
+
+<thead>
+</thead>
+
+<tbody>
+</tbody>
+
+</table>
+</div>
+
+<p class="stTit">Invoices Covering This Month:</p>
+
+<div class="bmCell">
+
+<table id="bmInvoices" cellspacing="0" cellpadding="0">
+
+<thead>
+	<tr>
+		<th class="calLH">Id:</th>
+		<th class="cBig">Date Issued:</th>
+		<th class="cBig">Carrier:</th>
+		<th class="cSmall">Amount:</th>
+		<th class="cSmall">Status:</th>
+	</tr>
+</thead>
+
+<tbody>
+</tbody>
+
+</table>
+
+</div>
+
+<div class="bmCell">
+<select id="bmCarrier">
+{% for carrier in carriers %}
+	<option value="{{ carrier.id }}">{{ carrier.name }}</option>
+{% endfor %}
+</select>
+<input type="button" id="bmInvoice" value="Add New Invoice" />
+</div>
+
+{% endblock %}

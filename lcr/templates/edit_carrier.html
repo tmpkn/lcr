@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block lcrContent %}
+
+<script type="text/javascript">
+$(function() {
+	$('#lcrMCHA').live('click', function() {
+		$('.lcrMCH').toggle();
+	}); 
+});
+</script>
+
+<p class="stTit">Manage Carrier: {{ carrier }}</p>
+
+<table class="lcrMC">
+<tr>
+	<th>Company Name:</th>
+	<td>{{ cform.name }}</td>
+	<th rowspan="4">Address:</th>
+	<td rowspan="4">{{ cform.address }}</td>
+</tr>
+<tr>
+	<th>Phone Number:</th>
+	<td>{{ cform.gen_phone }}</td>
+</tr>
+<tr>
+	<th>Website:</th>
+	<td>{{ cform.gen_www }}</td>
+</tr>
+<tr>
+	<th>E-mail:</th>
+	<td>{{ cform.gen_email }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th colspan="2" class="lcrMCT">BILLING</th>
+	<th>Contact Name:</th>
+	<td>{{ cform.bill_name }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th>Phone Number:</th>
+	<td>{{ cform.bill_phone }}</td>
+	<th>MSN:</th>
+	<td>{{ cform.bill_msn }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th>E-mail:</th>
+	<td>{{ cform.bill_email }}</td>
+	<th>Working Hours:</th>
+	<td>{{ cform.bill_hours }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th colspan="2" class="lcrMCT">NETWORK OPERATIONS CENTRE</th>
+	<th>Contact Name:</th>
+	<td>{{ cform.noc_name }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th>Phone Number:</th>
+	<td>{{ cform.noc_phone }}</td>
+	<th>MSN:</th>
+	<td>{{ cform.noc_msn }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th>E-mail:</th>
+	<td>{{ cform.noc_email }}</td>
+	<th>Working Hours:</th>
+	<td>{{ cform.noc_hours }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th colspan="2" class="lcrMCT">ISP/IP</th>
+	<th>I/C Location:</th>
+	<td>{{ cform.isp_city }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th>Provider Name:</th>
+	<td>{{ cform.isp_provider }}</td>
+	<th>AS Number:</th>
+	<td>{{ cform.isp_as }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th>Dedicated AS?</th>
+	<td>{{ cform.isp_asx }}</td>
+	<th>Dedicated Bandwidth:</th>
+	<td>{{ cform.isp_bandwidth }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th>Signalling IPs:</th>
+	<td>{{ cform.ip_signal }}</td>
+	<th>UDP/TCP SIP Port:</th>
+	<td>{{ cform.ip_port }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th>Other SIP IPs?</th>
+	<td>{{ cform.ip_signal_other }}</td>
+	<th>IP Connection Type:</th>
+	<td>{{ cform.ip_conntype }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th colspan="2" class="lcrMCT">VOIP INFORMATION</th>
+	<th>GW Brand:</th>
+	<td>{{ cform.prov_gw_brand }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th>GW Model:</th>
+	<td>{{ cform.prov_gw_model }}</td>
+	<th>GW Software Version:</th>
+	<td>{{ cform.prov_gw_soft }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th>Preferred Protocol:</th>
+	<td>{{ cform.prov_protocol }}</td>
+	<th>Number of Channels:</th>
+	<td>{{ cform.prov_req_sessions }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th>Requested CPS:</th>
+	<td>{{ cform.prov_req_cps }}</td>
+	<th>Primary Role:</th>
+	<td>{{ cform.prov_role }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th>Primary Codec:</th>
+	<td>{{ cform.prov_codec }}</td>
+	<th>Payload Size (ms):</th>
+	<td>{{ cform.prov_payload }}</td>
+</tr>
+<tr class="lcrMCH">
+	<th>Silence Suppression?</th>
+	<td>{{ cform.prov_ss }}</td>
+	<th>RFC2833 Support?</th>
+	<td>{{ cform.prov_rfc2833 }}</td>
+</tr>
+<tr>
+	<th colspan="3" style="border: 0px none;">&nbsp;</td>
+	<td><a id="lcrMCHA" href="javascript:void(0);">[Toggle Details]</a></td>
+</tr>
+
+</table>
+
+<p class="stTit">Opened Support Tickets:</p>
+
+<table class="lcrECR">
+	<tr>
+		<th>Ticket ID</th>
+		<th>Date Created</th>
+		<th>Author</th>
+		<th>&nbsp;</th>
+		<th class="lcrECRw">Problem Type</th>
+		<th>&nbsp;</th>
+		<th>&nbsp;</th>
+	</tr>
+	{% for ticket in carrier.get_new_tickets %}
+	<tr>
+		<th>#{{ ticket.id }}</th>
+		<td>{{ ticket.info_dt|date:"Y-m-d H:i" }}</td>
+		<td>{{ ticket.author_name }}</td>
+		<td colspan="3" class="lcrECRw">{{ ticket.get_request_type_display }}</td>
+		<td><a href="/edit_escalation/{{ ticket.id }}/">Edit</a></td>
+	</tr>
+	{% endfor %}
+
+</table>
+
+<p class="stTit">Customer Accounts:</p>
+
+<p class="stText"><a href="/add_carrier_customer/{{ carrier.id }}/">Add Customer Account</a></p>
+
+<table class="lcrECR">
+	<tr>
+		<th>Switch IP</th>
+		<th>Codename</th>
+		<th>Number of IPs</th>
+		<th>Number of Deals</th>
+		<th>Total Credit</th>
+		<th>Total Consumed</th>
+		<th>Total Balance</th>
+		<th>&nbsp;</th>
+	</tr>
+	{% for customer in carrier.get_customers %}
+	<tr>
+		<th>{{ customer.switch.ip_addr }}</th>
+		<td>[{{ customer.s_name }}]</td>
+		<td>{{ customer.num_ips }} IP Addresses</td>
+		<td>{{ customer.get_deal_num }} Active Deals</td>
+		<td>${{ customer.get_total_credit|floatformat:"2"|intcomma }}</td>
+		<td>${{ customer.get_total_consumed|floatformat:"2"|intcomma }}</td>
+		<td>${{ customer.get_delta|floatformat:"2"|intcomma }}</td>
+		<td><a href="/edit_customer/{{ customer.id }}/">Edit</a></td>
+	</tr>
+	{% endfor %}
+</table>
+
+<p class="stTit">Carrier as Customer - Active Deals:</p>
+
+<table class="lcrECR">
+	<tr>
+		<th>Deal ID</th>
+		<th>Acc. Codename</th>
+		<th>Switch IP</th>
+		<th>Supp. Price</th>
+		<th>Destination Name</th>
+		<th>Supplier</th>
+		<th>Balance</th>
+		<th>&nbsp;</th>
+	</tr>
+	{% for deal in carrier.get_deals_customer %}
+	<tr>
+		<th>#{{ deal.id }}</th>
+		<td><a href="/edit_customer/{{ deal.buy_carrier.id }}/">[{{ deal.buy_carrier.s_name }}]</a></td>
+		<td>{{ deal.buy_carrier.switch.ip_addr }}</td>
+		<td>${{ deal.buy_price }} / min</td>
+		<td><a href="/dest_details/{{ deal.destination.id }}/">{{ deal.destination.name }}</a></td>
+		<td><a href="/edit_carrier/{{ deal.destination.supplier.carrier.id }}/">{{ deal.destination.supplier.carrier.name }}</a></td>
+		<td>${{ deal.total_balance_buyer|floatformat:"2"|intcomma }}</td>
+		<td><a href="/edit_deal/{{ deal.id }}/">Edit</a></td>
+	</tr>
+	{% endfor %}
+</table>
+
+<p class="stTit">Supplier Accounts:</p>
+
+<p class="stText"><a href="/add_carrier_supplier/{{ carrier.id }}/">Add Supplier Account</a></p>
+
+<table class="lcrECR">
+	<tr>
+		<th>Codename</th>
+		<th>Number of Deals</th>
+		<th>Total Credit</th>
+		<th>Total Consumed</th>
+		<th>Total Balance</th>
+	</tr>
+	{% for supplier in carrier.get_suppliers %}
+	<tr>
+		<td>[{{ supplier.s_name }}]</td>
+		<td>{{ supplier.get_deal_num }} Active Deals</td>
+		<td>${{ supplier.get_total_credit|floatformat:"2"|intcomma }}</td>
+		<td>${{ supplier.get_total_consumed|floatformat:"2"|intcomma }}</td>
+		<td>${{ supplier.get_delta|floatformat:"2"|intcomma }}</td>
+	</tr>
+	{% endfor %}
+</table>
+
+<p class="stTit">Carrier as Supplier - Active Deals:</p>
+
+<table class="lcrECR">
+	<tr>
+		<th>Deal ID</th>
+		<th>Cust. Codename</th>
+		<th>Cust. Switch IP</th>
+		<th>Cust. Price</th>
+		<th>Destination Name</th>
+		<th>Customer</th>
+		<th>Balance</th>
+		<th>&nbsp;</th>
+	</tr>
+	{% for deal in carrier.get_deals_supplier %}
+	<tr>
+		<th>#{{ deal.id }}</th>
+		<td><a href="/edit_customer/{{ deal.buy_carrier.id }}/">[{{ deal.buy_carrier.s_name }}]</a></td>
+		<td>{{ deal.buy_carrier.switch.ip_addr }}</td>
+		<td>${{ deal.sell_price }} / min</td>
+		<td><a href="/dest_details/{{ deal.destination.id }}/">{{ deal.destination.name }}</a></td>
+		<td><a href="/edit_carrier/{{ deal.buy_carrier.carrier.id }}/">{{ deal.buy_carrier.carrier.name }}</a></td>
+		<td>${{ deal.total_balance_seller|floatformat:"2"|intcomma }}</td>
+		<td><a href="/edit_deal/{{ deal.id }}/">Edit</a></td>
+	</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}

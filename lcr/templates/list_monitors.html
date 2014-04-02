@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<p class="stTit">List of Route Monitors</p>
+<p class="stText"><a href="/add_monitor/">Add a new Quality Monitor</a></p>
+<table>
+
+	{% for monitor in monitors %}
+	<tr class="qmTR{{ monitor.status }}">
+		<th colspan="6">{{ monitor.deal }}</th>
+	</tr>
+	<tr>
+		<td><b>{{ monitor.get_period_display }}</b></td>
+		<td><i>ASR:</i> {{ monitor.asr }} %</td>
+		<td><i>ACD:</i> {{ monitor.acd }} s</td>
+		<td><i>Volume:</i> {{ monitor.vol }} min</td>
+		<td><a href="/monitor_reset/{{ monitor.id }}/">>> RESET <<</a></td>
+		<td><a href="/monitor_edit/{{ monitor.id }}/">Edit</a> / <a href="/monitor_delete/{{ monitor.id }}/">X</a></td>
+	</tr>
+	{% endfor %}
+
+</table>
+
+{% endblock %}

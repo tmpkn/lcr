@@ -1,0 +1,17 @@
+{% extends "base-register.html" %}
+
+{% load humanize %}
+
+{% block lcrContent %}
+
+<p class="stTit">Tesserakt Software Appliance Licensing</p>
+
+<p class="stText">Application token: <b>{{ reg.token }}</b></p>
+
+<p class="stText">Status of your application: <b>{{ reg.get_status_display }}</b></p>
+
+<p class="stText">Submission date: <b>{{ reg.dt_when }}</b></p>
+
+<p class="stText">Once your application has been approved, please visit this page to get access to your TG/LCR software credentials. Please keep your personal URL safe. Thank you for your business!</p>
+
+{% endblock %}

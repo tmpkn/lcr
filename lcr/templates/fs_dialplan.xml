@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="freeswitch/xml">
+  <section name="dialplan" description="RE Dial Plan For FreeSwitch">
+    <context name="wholesale">
+      <extension name="lcr">
+        <condition field="destination_number" expression="^{{ deal_prefix }}{{ e164.code }}(\d*?)$">
+		<action application="set" data="did={{ deal_id }}"/>
+	  	<action application="set" data="sip_append_audio_sdp=a=fmtp:18 annexb=no"/>
+        	<action application="bridge" data="{{ sip_data }}"/>
+        </condition>
+      </extension>
+    </context>
+  </section>
+</document>

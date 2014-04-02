@@ -1,0 +1,12 @@
+{ "deals": [
+{% for deal in deals %}
+	{
+		"id":		{{ deal.id }},
+		"network": 	"{{ deal.destination.name }}",
+		"ppm":		"{{ deal.stats.ppm|floatformat:4 }}",
+		"minutes":	"{{ deal.stats.sum_minutes|floatformat:2 }}",
+		"value":	"{{ deal.stats.sum_cost|floatformat:2 }}"
+	}
+	{% if not forloop.last %},{% endif %}
+{% endfor %}
+]}

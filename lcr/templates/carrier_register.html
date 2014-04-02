@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<p class="stTit">Carrier Registration</p>
+<p class="stText">Welcome to Carrier Registration Form. Please fill in all required fields and click "Submit Form". Once your data is processed by our interconnection team, we will contact you and inform about the <b>Carrier ID</b> you will have assigned. In any further communication, please use the <b>Carrier ID</b> to identify your company with our support teams. Should you have any questions about this form, don't hesitate to <a href="/carrier/contact/">contact us</a>, we will be glad to assist you.</p>
+<div class="cForm">
+<form action="/carrier/register/" method="post">
+        <fieldset>
+		<legend>Your VoIP Company</legend>
+		<table>
+		{{ cdata.name }}
+		{% with form.name as field %}{% with cdata.c_name as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.address as field %}{% with cdata.c_fa as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.gen_phone as field %}{% with cdata.c_phone as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.gen_www as field %}{% with cdata.c_website as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.gen_email as field %}{% with cdata.c_email as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		</table>
+	</fieldset>
+	<p class="stText">Please use <a href="http://en.wikipedia.org/wiki/Greenwich_Mean_Time" target="lcrX">GMT</a> for hours and dates. {{ p.name }} business hours are 09:00 - 17:00 GMT.</p>
+	<fieldset>
+		<legend>Billing Information</legend>
+		<table>
+		{% with form.bill_name as field %}{% with cdata.b_name as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.bill_phone as field %}{% with cdata.b_phone as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.bill_msn as field %}{% with cdata.b_msn as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.bill_email as field %}{% with cdata.b_email as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.bill_hours as field %}{% with cdata.b_hours as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		</table>
+	</fieldset>
+	<fieldset>
+		<legend>NOC Information</legend>
+		<table>
+		{% with form.noc_name as field %}{% with cdata.n_name as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.noc_phone as field %}{% with cdata.n_phone as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.noc_msn as field %}{% with cdata.n_msn as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.noc_email as field %}{% with cdata.n_email as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.noc_hours as field %}{% with cdata.n_hours as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		</table>
+	</fieldset>
+	<p class="stText">{{ p.name }} has its equipment located in <a href="http://www.connected.pl" target="lcrX">CIX</a> datacenter in Krakow, Poland. VoIP infrastructure is operated by <a href="http://www.tesserakt.eu" target="lcrX">Tesserakt</a>, and direct IP links include many European, American and Russian providers.</p>
+	<fieldset>
+		<legend>Internet Service Provider</legend>
+		<table>
+		{% with form.isp_city as field %}{% with cdata.i_city as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.isp_provider as field %}{% with cdata.i_provider as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.isp_as as field %}{% with cdata.i_as as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.isp_asx as field %}{% with cdata.i_dedicated as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.isp_bandwidth as field %}{% with cdata.i_band as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		</table>
+	</fieldset>
+	<p class="stText">Please use <a href="http://en.wikipedia.org/wiki/CIDR" target="lcrX">CIDR</a> notation for IP ranges. {{ p.name }} is going to send and receive traffic using IPs from <b>93.159.144.160/27</b> network. Individual addresses will be assigned to you by our Interconnect Team. Please note, that we mainly operate using <b>SIP 2.0 + UDP</b> and our preferred codec is <b>G.729</b>. Transcoding is disabled by default, but can be enabled per individual agreements.</p>
+	<fieldset>
+		<legend>Internet Protocol</legend>
+		<table>
+		{% with form.ip_signal as field %}{% with cdata.p_signal as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.ip_port as field %}{% with cdata.p_port as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.ip_signal_other as field %}{% with cdata.p_sother as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.ip_media as field %}{% with cdata.p_media as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.ip_media_other as field %}{% with cdata.p_mother as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.ip_conntype as field %}{% with cdata.p_iptype as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		</table>
+	</fieldset>
+	<p class="stText">{{ p.name }} operates a wide range of software to deliver the best possible VoIP quality. Your SIP calls will be handled by our <a href="http://www.opensips.org/" target="lcrX">SIPS</a> and <a href="http://voipswitch.com/en/products/ip-pbx/entreprise-ip-pbx/" target="lcrX">VoipSwitch</a> switches. Both incoming and outgoing calls are subject to our CPS rules enforced on L3 using <a href="http://www.tesserakt.eu/tts.pdf" target="lcrX">TTS</a>, so make sure you send and expect calls within the limits agreed during the interconnection.</p>
+	<fieldset>
+		<legend>VoIP Information</legend>
+		<table>
+		{% with form.prov_gw_brand as field %}{% with cdata.v_manufact as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.prov_gw_model as field %}{% with cdata.v_model as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.prov_gw_soft as field %}{% with cdata.v_version as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.prov_protocol as field %}{% with cdata.v_protocol as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.prov_req_sessions as field %}{% with cdata.v_numsess as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.prov_req_cps as field %}{% with cdata.v_cps as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.prov_role as field %}{% with cdata.v_role as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.prov_codec as field %}{% with cdata.v_codec as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.prov_payload as field %}{% with cdata.v_payload as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.prov_ss as field %}{% with cdata.v_sss as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		{% with form.prov_rfc2833 as field %}{% with cdata.v_rfc as static %}{% include "form_cell_static.html" %}{% endwith %}{% endwith %}
+		</table>
+	</fieldset>
+	<input type="submit" value="Submit Form" class="cfSubmit" />
+</form>
+</div>
+{% endblock %}

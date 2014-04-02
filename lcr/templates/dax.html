@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<script type="text/javascript" src="/media/js/swfobject.js"></script>
+<script type="text/javascript">
+{% if user.get_profile.get_partner.partner.id == 1 or user.get_profile.is_god %}
+
+{% endif %}
+
+cur_week = new Date();
+cur_did = 0;
+cur_select = 0;
+cur_select_begin = 0;
+cur_select_end = 0;
+cur_data = '';
+
+function set_cur_week() {
+	var cur_day = new Date();
+	while (cur_day.getDay() != 1) {
+		cur_day.setDate(cur_day.getDate() - 1);
+	}
+	cur_day.setHours(0);
+	cur_day.setMinutes(0);
+	cur_day.setSeconds(0);
+	cur_week = cur_day;
+}
+
+function draw_table(tab_id, prefix) {
+	$('#' + tab_id).append('<tr id="dxTRHead"><th><a id="txhPREV">&lt;&lt;</a> <a id="txhNEXT">&gt;&gt;</a></th><td colspan="168" id="txTDH"><span id="txhBEGIN"></span> - <span id="txhEND"></span><br /><span id="txhSTAT"></span></td></tr>');
+	for (var v = 50; v > 0; v--) {
+		var row_id = prefix + 'RV' + v;
+		$('#' + tab_id).append('<tr id="' + row_id + '"></tr>');
+		if (!(v % 5)) {
+			$('#' + row_id).append('<th id="' + prefix + 'LV' + v + '" rowspan="5"></th>');
+		}
+		for (var day = 0; day < 7; day++) {
+			var cur_day = new Date();
+			var cur_tday = new Date();
+			cur_day.setHours(0);
+			cur_day.setMinutes(0);
+			cur_day.setSeconds(0);
+			cur_tday.setHours(0);
+			cur_tday.setMinutes(0);
+			cur_tday.setSeconds(0);
+			cur_day.setDate(cur_week.getDate() + day);
+			cur_tday.setDate(cur_week.getDate() + day);
+			for (var hour = 0; hour < 24; hour++) {
+				cur_tday.setHours(hour);
+				if (hour == 23) {
+					var cell_class = 'dxCellFinal';
+				} else {
+					var cell_class = 'dxCellNormal';
+				}
+				var cell_id = prefix + 'D' + Math.floor(cur_day.getTime() / 1000) + 'H' + hour + 'V' + v;
+				$('#' + row_id).append('<td id="' + cell_id + '" class="' + cell_class + ' dxCellAny dxTD' + Math.floor(cur_tday.getTime() / 1000) + '" dxtd="' + Math.floor(cur_tday.getTime() / 1000) + '"></td>');
+			}
+		}
+	}
+	$('#' + tab_id).append('<tr id="' + prefix + 'RFooter" class="dxRFooter"><th id="' + prefix + 'LFooter"></th></tr>');
+	for (var day = 0; day < 7; day++) {
+		var cur_day = new Date();
+		cur_day.setDate(cur_week.getDate() + day);
+		$('#' + prefix + 'RFooter').append('<td id="' + prefix + 'D' + Math.floor(cur_day.getTime() / 1000) + 'Footer" colspan="24">' + cur_day.toDateString() + '</td>');
+	}
+	$('#' + prefix + 'LV35').html('VOL');
+	$('#' + prefix + 'LV30').html('ACD');
+	$('#' + prefix + 'LV25').html('ASR');
+}
+
+function get_value(value, top, resolution) {
+	return Math.round((value / top) * resolution);
+}
+
+function draw_chart(tab_id, prefix, did, source_field) {
+	$('.dxX').removeClass('dxX');
+	$('#' + prefix + 'LV50').html('');
+	$('#' + prefix + 'LV5').html('');
+	$.getJSON('/ajx_dax_stats/' + did + '/' + Math.floor(cur_week.getTime() / 1000) + '/', function(data) {
+		cur_data = data;
+		var top_val = 0;
+		$.each(data, function(dkey, dval) {
+			for (var hour = 0; hour < 24; hour++) {
+				if (typeof dval[hour] != 'undefined') {
+					if (dval[hour][source_field] > top_val) {
+						top_val = dval[hour][source_field];
+					}
+				}
+			}
+		});
+		$.each(data, function(dkey, dval) {
+			for (var hour = 0; hour < 24; hour++) {
+				if (typeof dval[hour] != 'undefined') {
+					for (v = 0; v <= get_value(dval[hour][source_field], top_val, 50); v++) {
+						$('#' + prefix + 'D' + dkey + 'H' + hour + 'V' + v).addClass('dxX');
+					}
+					if (dval[hour][source_field] > top_val) {
+						top_val = dval[hour][source_field];
+					}
+				}
+			}
+		});
+		$('#' + prefix + 'LV50').html(top_val);
+		$('#' + prefix + 'LV5').html('0');
+		if (source_field == 'asr') {
+			$('#' + prefix + 'LV25').addClass('dxX')
+		}
+		if (source_field == 'acd') {
+			$('#' + prefix + 'LV30').addClass('dxX')
+		}
+		if (source_field == 'seconds') {
+			$('#' + prefix + 'LV35').addClass('dxX')
+		}
+	});
+}
+
+function deal_details(did) {
+	$('.dDealRow').removeClass('ddHRow');
+	$('#dXVOL').html('');
+	cur_did = did;
+	$.getJSON('/ajx_deal/' + did + '/', function(data) {
+		$('#dDealName').html(data.name);
+		$('#ddSellTo').html(data.buy_carrier_name);
+		$('#ddBuyFrom').html(data.sell_carrier_name);
+		$('#ddSwitch').html(data.switch_ip + '<br />' + data.switch_type_str);
+		$('#ddCustRate').html('$ ' + data.buy_price + ' / min.');
+		$('#ddSuppRate').html('$ ' + data.sell_price + ' / min.');
+		$('#ddLastTraffic').html(data.last_traffic);
+		$('#ddTotalMinutes').html(data.tot_minutes);
+		/*$('#ddGraphs').html('<img src="/chart/stat/vol/' + did + '/' + Math.random() + '/stats.gif" title="Traffic Volume" /><br /><img src="/chart/stat/acd/' + did + '/' + Math.random() + '/stats.gif" title="ACD" /><br /><img src="/chart/stat/asr/' + did + '/' + Math.random() + '/stats.gif" title="ASR" />');*/
+		$('#ddEditDeal').html('<a href="/edit_deal/' + did + '/">&gt;&gt; Edit Deal</a>');
+		$('#ddr' + did).addClass('ddHRow');
+	});
+	draw_table('dXVOL', 'dxv');
+	draw_chart('dXVOL', 'dxv', did, 'seconds');
+}
+
+function select_period_begin(td_begin) {
+	$('.dxSPerm').removeClass('dxSPerm');
+	cur_select = 1;
+	cur_select_begin = td_begin;
+	$('.dxTD' + td_begin).addClass('dxSPerm');
+	var dtd_begin = new Date(parseInt(td_begin) * 1000);
+	$('#txhBEGIN').html(dtd_begin.toDateString() + ' ' + dtd_begin.toTimeString());
+}
+
+function select_period_end(td_end) {
+	cur_select = 0;
+	cur_select_end = td_end;
+	$('.dxSTemp').addClass('dxSPerm').removeClass('dxSTemp');
+	select_period(cur_select_begin, cur_select_end);
+}
+
+function select_period_hover(td_hover) {
+	var td_cur = parseInt(td_hover);
+	if (cur_select) {
+		$('.dxSTemp').removeClass('dxSTemp');
+		if (td_hover > cur_select_begin) {
+			var change = -3600;
+		}
+		if (td_hover < cur_select_begin) {
+			var change = 3600;
+		}
+		$('.dxTD' + td_cur).addClass('dxSTemp');
+		var dtd_hover = new Date(td_cur * 1000);
+		$('#txhEND').html(dtd_hover.toDateString() + ' ' + dtd_hover.toTimeString());
+	}
+}
+
+function select_period(td_begin, td_end) {
+	$('.dxSPerm').removeClass('dxSPerm');
+	$('.dxSTemp').removeClass('dxSTemp');
+	if (td_begin > td_end) {
+		var td_temp = td_begin;
+		td_begin = td_end;
+		td_end = td_temp;
+	}
+	dtd_begin = new Date(parseInt(td_begin) * 1000);
+	dtd_end = new Date(parseInt(td_end) * 1000);
+	$('#txhBEGIN').html(dtd_begin.toDateString() + ' ' + dtd_begin.toTimeString());
+	$('#txhEND').html(dtd_end.toDateString() + ' ' + dtd_end.toTimeString());
+	stats_found = 0;
+	stats_seconds = 0;
+	stats_calls_ok = 0;
+	stats_calls_fail = 0;
+	for (var td_cur = parseInt(td_begin); td_cur <= parseInt(td_end); td_cur = td_cur + 3600) {
+		var dtd_cur = new Date(parseInt(td_cur) * 1000);
+		var dtd_day = new Date(parseInt(td_cur) * 1000);
+		dtd_day.setHours(0);
+		dtd_day.setMinutes(0);
+		dtd_day.setSeconds(0);
+		var day_idx = '' + Math.floor(dtd_day.getTime() / 1000);
+		if (typeof cur_data[day_idx][dtd_cur.getHours()] != 'undefined') {
+			var stat = cur_data[day_idx][dtd_cur.getHours()];
+			stats_found++;
+			stats_seconds += stat['seconds'];
+			stats_calls_ok += stat['calls_ok'];
+			stats_calls_fail += stat['calls_fail'];
+		}
+		$('.dxTD' + td_cur).addClass('dxSPerm');
+	}
+	var str_stat = '<b>Stats:</b> ' + stats_found + ' - <b>Minutes:</b> ' + Math.round(stats_seconds / 60) + ' - <b>ASR:</b> ' + Math.round((100 * stats_calls_ok) / (stats_calls_ok + stats_calls_fail)) + '% - <b>ACD:</b> ' + Math.round(stats_seconds / stats_calls_ok)
+	$('#txhSTAT').html(str_stat);
+}
+
+$(document).ready(function() {
+	$('#dDealTable').dataTable();
+	$(document).on("click", ".dDealRow", function(event) {
+		deal_details($(this).attr('did'));
+	});
+	set_cur_week();
+	$(document).on("click", "#dxvLV25", function() {
+		draw_chart('dXVOL', 'dxv', cur_did, 'asr');
+	});
+	$(document).on("click", "#dxvLV30", function() {
+		draw_chart('dXVOL', 'dxv', cur_did, 'acd');
+	});
+	$(document).on("click", "#dxvLV35", function() {
+		draw_chart('dXVOL', 'dxv', cur_did, 'seconds');
+	});
+	$(document).on("click", ".dxCellAny", function() {
+		if (cur_select == 0) {
+			select_period_begin($(this).attr('dxtd'));
+		} else {
+			select_period_end($(this).attr('dxtd'));
+		}
+	});
+	$(document).on("mouseenter", ".dxCellAny", function() {
+		select_period_hover($(this).attr('dxtd'));
+	});
+	$(document).on("click", "#txhPREV", function() {
+		cur_week.setDate(cur_week.getDate() - 7);
+		deal_details(cur_did);
+	});
+	$(document).on("click", "#txhNEXT", function() {
+		cur_week.setDate(cur_week.getDate() + 7);
+		deal_details(cur_did);
+	});
+});
+
+</script>
+
+<p class="stTit">The Dashboard - Active Deals</p>
+
+<table id="dDealTable">
+	<thead>
+	<tr>
+		<th style="width: 40px;">ID</th>
+		<th style="width: 160px;">Customer</th>
+		<th style="width: 140px;">Destination</th>
+		<th style="width: 160px;">Supplier</th>
+		<th style="width: 60px;">Cust. Price</th>
+		<th style="width: 60px;">Supp. Price</th>
+		<th style="width: 80px;">1H Vol.</th>
+		<th style="width: 60px;">1H ACD</th>
+		<th style="width: 60px;">1H ASR</th>
+		<th style="width: 60px;">1H #Ch</th>
+		<th style="width: 40px;">Trend</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for deal in deals %}
+	<tr did="{{ deal.id }}" class="dDealRow" id="ddr{{ deal.id }}">
+		<td>{{ deal.id }}</td>
+		<td>{{ deal.buy_carrier.carrier.name }}</td>
+		<td>{{ deal.destination.name }}</td>
+		<td>{{ deal.destination.supplier.carrier.name }}</td>
+		<td class="tjRight">$ {{ deal.buy_price }}</td>
+		<td class="tjRight">$ {{ deal.sell_price }}</td>
+		<td class="tjRight">{{ deal.lh.minutes|floatformat:0 }} min</td>
+		<td class="tjRight">{{ deal.lh.acd }} s</td>
+		<td class="tjRight">{{ deal.lh.asr|floatformat:0 }} %</td>
+		<td class="tjRight">{{ deal.lh.chans }}</td>
+		<td class="tjCenter">{{ deal.lh.trend }}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+<p class="stTit">Deal Details - <span id="dDealName">[No Deal Selected]</span></p>
+
+<table id="ddDetails">
+
+<tr>
+	<td style="width: 300px; height: 80px;" class="tjCenter tjMiddle">
+		<span class="ddTit">Selling To:</span><br />
+		<span class="ddBig" id="ddSellTo">- - -</span>
+	</td>
+	<td style="width: 150px;" rowspan="2" class="tjCenter tjMiddle">
+		<span class="ddTit">Via:</span><br />
+		<span class="ddBig" id="ddSwitch">- - -</span>
+	</td>
+	<td style="width: 300px;" class="tjCenter tjMiddle">
+		<span class="ddTit">Buying From:</span><br />
+		<span class="ddBig" id="ddBuyFrom">- - -</span>
+	</td>
+</tr>
+
+<tr>
+	<td style="height: 80px;" class="tjCenter tjMiddle">
+		<span class="ddTit">At rate:</span><br />
+		<span class="ddBig" id="ddCustRate">- - -</span>
+	</td>
+	<td class="tjCenter tjMiddle">
+		<span class="ddTit">At rate:</span><br />
+		<span class="ddBig" id="ddSuppRate">- - -</span>
+	</td>
+</tr>
+
+<tr>
+	<td style="height: 35px;" class="tjMiddle"><span class="ddTit">Last traffic recorded:</span></td>
+	<td colspan="2" class="tjMiddle"><span class="ddBig" id="ddLastTraffic">- - -</span></td>
+</tr>
+<tr>
+	<td style="height: 35px;" class="tjMiddle"><span class="ddTit">Total number of mintues:</span></td>
+	<td colspan="2" class="tjMiddle"><span class="ddBig" id="ddTotalMinutes">- - -</span></td>
+</tr>
+<tr>
+	<td style="height: 35px;" class="tjMiddle">&nbsp;</td>
+	<td colspan="2" class="tjCenter"><span class="ddTit" id="ddEditDeal"></span></td>
+</tr>
+
+<tr>
+	<td colspan="3" id="ddGraphs" class="tjCenter"></td>
+</tr>
+
+</table>
+
+<table id="dXVOL" class="dxT" cellspacing="0" cellpadding="0">
+
+</table>
+
+{% endblock %}

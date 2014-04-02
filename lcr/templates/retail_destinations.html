@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Retail Destinations</p>
+
+<p class="stText"><a href="/retail/add_destination/">Add New Destination</a></p>
+
+<p class="stText">Please pick the retail destination you want to manage from the following table:</p>
+
+<table class="lcrED">
+{% for destination in destinations %}
+	<tr>
+		<th><a href="/retail/edit_destination/{{ destination.id }}/">{{ destination.name }}</a></th>
+		<td>Sub-Destinations: {{ destination.num_subdestinations }}</td>
+		<td>Prefixes: {{ destination.num_prefixes }}</td>
+	</tr>
+{% endfor %}
+</table>
+
+
+{% endblock %}

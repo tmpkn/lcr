@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+<form action="/supplier/" method="post">
+		<table>
+                {{ form.as_table }}
+		</table>
+        <input type="submit" value="Add" />
+</form>
+{% endblock %}

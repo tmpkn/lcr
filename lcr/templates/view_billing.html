@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<form action="/view_billing/" method="post">
+<p class="stText">From: <input type="text" name="d_from" value="{{ d }}" /> / To: <input type="text" name="d_to" value="{{ de }}" /> <input type="submit" value="Apply" />
+</form>
+
+<p class="stTit">Billing information for {{ d }} - {{ de }}:</p>
+
+<p class="stText">Please note, that these stats <b><u>DO NOT</u></b> include the present day.</p>
+
+<div class="biD">
+<table class="bt" style="background-color: #d9ffd3;">
+{% for c in b %}
+<tr>
+	<th colspan="4" class="btC">{{ c.customer.carrier }}</th>
+</tr>
+	<tr>
+		<th>Deal</th>
+		<th>Minutes</th>
+		<th>Cost</th>
+		<th>Value</th>
+	</tr>
+	{% for deal in c.deals %}
+	<tr>
+		<td class="btD">{{ deal.deal.destination }}</td>
+		<td>{{ deal.d_minutes }}</td>
+		<td>${{ deal.deal.buy_price }}</td>
+		<td>${{ deal.d_cost }}</td>
+	</tr>
+	{% endfor %}
+	<tr>
+		<td class="btT">TOTAL</td>
+		<td>{{ c.tot_dur }}</td>
+		<td>--</td>
+		<td>${{ c.tot_cost }}</td>
+	</tr>
+{% endfor %}
+</table>
+</div>
+
+<div class="biD" style="background-color: #ffd3d3;">
+<table class="bt">
+{% for c in t %}
+<tr>
+        <th colspan="4" class="btC">{{ c.supplier }}</th>
+</tr>
+        <tr>
+                <th>Deal</th>
+                <th>Minutes</th>
+                <th>Cost</th>
+                <th>Value</th>
+        </tr>
+        {% for deal in c.deals %}
+        <tr>
+                <td class="btD">{{ deal.deal.destination.name }}</td>
+                <td>{{ deal.d_minutes }}</td>
+                <td>${{ deal.deal.buy_price }}</td>
+                <td>${{ deal.d_cost }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+                <td class="btT">TOTAL</td>
+                <td>{{ c.tot_dur }}</td>
+                <td>--</td>
+                <td>${{ c.tot_cost }}</td>
+        </tr>
+{% endfor %}
+</table>
+
+</div>
+
+{% endblock %}

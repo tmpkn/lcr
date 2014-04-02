@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<script type="text/javascript" src="/media/js/swfobject.js"></script>
+<script type="text/javascript">
+{% if user.get_profile.get_partner.partner.id == 1 or user.get_profile.is_god %}
+
+{% endif %}
+
+function deal_details(did) {
+	$('.dDealRow').removeClass('ddHRow');
+	$.getJSON('/ajx_deal/' + did + '/', function(data) {
+		$('#dDealName').html(data.name);
+		$('#ddSellTo').html(data.buy_carrier_name);
+		$('#ddBuyFrom').html(data.sell_carrier_name);
+		$('#ddSwitch').html(data.switch_ip + '<br />' + data.switch_type_str);
+		$('#ddCustRate').html('$ ' + data.buy_price + ' / min.');
+		$('#ddSuppRate').html('$ ' + data.sell_price + ' / min.');
+		$('#ddLastTraffic').html(data.last_traffic);
+		$('#ddTotalMinutes').html(data.tot_minutes);
+		$('#ddGraphs').html('<img src="/chart/stat/vol/' + did + '/' + Math.random() + '/stats.gif" title="Traffic Volume" /><br /><img src="/chart/stat/acd/' + did + '/' + Math.random() + '/stats.gif" title="ACD" /><br /><img src="/chart/stat/asr/' + did + '/' + Math.random() + '/stats.gif" title="ASR" />');
+		$('#ddEditDeal').html('<a href="/edit_deal/' + did + '/">&gt;&gt; Edit Deal</a>');
+		$('#ddr' + did).addClass('ddHRow');
+	});
+}
+
+$(document).ready(function() {
+	$('#dDealTable').dataTable();
+	$('.dDealRow').on("click", function(event) {
+		deal_details($(this).attr('did'));
+	});
+	
+});
+
+</script>
+
+<p class="stTit">The Dashboard - Active Deals</p>
+
+<table id="dDealTable">
+	<thead>
+	<tr>
+		<th style="width: 40px;">ID</th>
+		<th style="width: 160px;">Customer</th>
+		<th style="width: 140px;">Destination</th>
+		<th style="width: 160px;">Supplier</th>
+		<th style="width: 60px;">Cust. Price</th>
+		<th style="width: 60px;">Supp. Price</th>
+		<th style="width: 80px;">1H Vol.</th>
+		<th style="width: 60px;">1H ACD</th>
+		<th style="width: 60px;">1H ASR</th>
+		<th style="width: 60px;">1H #Ch</th>
+		<th style="width: 40px;">Trend</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for deal in deals %}
+	<tr did="{{ deal.id }}" class="dDealRow" id="ddr{{ deal.id }}">
+		<td>{{ deal.id }}</td>
+		<td>{{ deal.buy_carrier.carrier.name }}</td>
+		<td>{{ deal.destination.name }}</td>
+		<td>{{ deal.destination.supplier.carrier.name }}</td>
+		<td class="tjRight">$ {{ deal.buy_price }}</td>
+		<td class="tjRight">$ {{ deal.sell_price }}</td>
+		<td class="tjRight">{{ deal.lh.minutes|floatformat:0 }} min</td>
+		<td class="tjRight">{{ deal.lh.acd }} s</td>
+		<td class="tjRight">{{ deal.lh.asr|floatformat:0 }} %</td>
+		<td class="tjRight">{{ deal.lh.chans }}</td>
+		<td class="tjCenter">{{ deal.lh.trend }}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+<p class="stTit">Deal Details - <span id="dDealName">[No Deal Selected]</span></p>
+
+<table id="ddDetails">
+
+<tr>
+	<td style="width: 300px; height: 80px;" class="tjCenter tjMiddle">
+		<span class="ddTit">Selling To:</span><br />
+		<span class="ddBig" id="ddSellTo">- - -</span>
+	</td>
+	<td style="width: 150px;" rowspan="2" class="tjCenter tjMiddle">
+		<span class="ddTit">Via:</span><br />
+		<span class="ddBig" id="ddSwitch">- - -</span>
+	</td>
+	<td style="width: 300px;" class="tjCenter tjMiddle">
+		<span class="ddTit">Buying From:</span><br />
+		<span class="ddBig" id="ddBuyFrom">- - -</span>
+	</td>
+</tr>
+
+<tr>
+	<td style="height: 80px;" class="tjCenter tjMiddle">
+		<span class="ddTit">At rate:</span><br />
+		<span class="ddBig" id="ddCustRate">- - -</span>
+	</td>
+	<td class="tjCenter tjMiddle">
+		<span class="ddTit">At rate:</span><br />
+		<span class="ddBig" id="ddSuppRate">- - -</span>
+	</td>
+</tr>
+
+<tr>
+	<td style="height: 35px;" class="tjMiddle"><span class="ddTit">Last traffic recorded:</span></td>
+	<td colspan="2" class="tjMiddle"><span class="ddBig" id="ddLastTraffic">- - -</span></td>
+</tr>
+<tr>
+	<td style="height: 35px;" class="tjMiddle"><span class="ddTit">Total number of mintues:</span></td>
+	<td colspan="2" class="tjMiddle"><span class="ddBig" id="ddTotalMinutes">- - -</span></td>
+</tr>
+<tr>
+	<td style="height: 35px;" class="tjMiddle">&nbsp;</td>
+	<td colspan="2" class="tjCenter"><span class="ddTit" id="ddEditDeal"></span></td>
+</tr>
+
+<tr>
+	<td colspan="3" id="ddGraphs" class="tjCenter"></td>
+</tr>
+
+</table>
+
+{% endblock %}

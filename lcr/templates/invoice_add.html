@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<p class="stTit">Add New Invoice</p>
+
+<p class="stText">Please provide the basic invoice information here. You will be then taken to another page, where you will be asked for the deals you want to include in this document.</p>
+
+<form action="/invoice/add/{{ carrier.id }}/" method="POST">
+<table>
+<tr>
+	<th>Carrier:</th>
+	<td>{{ carrier }}</td>
+</tr>
+{{ form.as_table }}
+</table>
+
+<p class="stText">Please use the following format for Date/Time fields: <b>YYYY-MM-DD HH:mm:ss</b>. TO field is inclusive!</p>
+
+<input type="submit" value="Submit New Invoice" />
+</form>
+
+{% endblock %}

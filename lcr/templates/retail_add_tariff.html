@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block lcrContent %}
+
+<form action="/retail/add_tariff/" method="POST">
+
+<p class="stTit">Add New Tariff</p>
+
+<p class="stText">Please fill in the following form to define a new tariff. After it is saved in the system, you will be able to perform additional actions, like adding new rates.</p>
+
+<table class="lcrED">
+{{ tform.as_table }}
+<tr>
+	<td colspan="2"><input type="submit" value="Add New Tariff" /></td>
+</tr>
+</table>
+
+</form>
+
+
+{% endblock %}
