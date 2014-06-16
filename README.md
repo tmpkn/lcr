@@ -6,6 +6,8 @@ What you see here is a final stage product of these years. What began as a simpl
 
 As we decided to cease all our wholesale related developments, I feel it is the only proper way to preserve all those years of sleepless night by releasing the software as Open Source.
 
+![alt tag](http://tesserakt.eu/graph/lcr_main.png)
+
 # Features
 
 - Wholesale grade billing, successfully used in production with Tier 1 operators: Verizon, TATA, T-Mobile, BT UK, BT Spain
